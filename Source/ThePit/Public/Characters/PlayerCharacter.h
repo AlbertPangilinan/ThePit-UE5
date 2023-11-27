@@ -4,7 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+// Enhanced Input
+#include "InputActionValue.h"
+
+
 #include "PlayerCharacter.generated.h"
+
+// Enhanced Input
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class THEPIT_API APlayerCharacter : public ACharacter
@@ -19,9 +28,26 @@ public:
 
 
 protected:
+	// Functions
 	virtual void BeginPlay() override; // Called when the game starts or when spawned
 
+	// Enhanced Input
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
-private:	
+
+	// Variables
+	// Enhanced Input
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputMappingContext* PlayerContext;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* LookAction;
+
+
+private:
 
 };
