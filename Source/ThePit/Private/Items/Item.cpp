@@ -11,13 +11,6 @@ AItem::AItem()
 
 }
 
-// Called when the game starts or when spawned
-void AItem::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
@@ -25,3 +18,9 @@ void AItem::Tick(float DeltaTime)
 
 }
 
+// Called when the game starts or when spawned
+void AItem::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
