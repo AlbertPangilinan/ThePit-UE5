@@ -53,6 +53,11 @@ protected:
 	UInputAction* LookAction;
 
 
+	// Character State
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FVector2D MovementVector;
+
+
 private:
 	// Functions
 	

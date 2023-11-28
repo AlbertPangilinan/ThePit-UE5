@@ -28,7 +28,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
 	CameraBoom->TargetArmLength = 250.f;
-	CameraBoom->SocketOffset = FVector(0.f, 75.f, 75.f);
+	CameraBoom->SocketOffset = FVector(0.f, 75.f, 50.f);
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
 	ViewCamera->SetupAttachment(CameraBoom);
@@ -69,7 +69,7 @@ void APlayerCharacter::BeginPlay()
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
-	const FVector2D MovementVector = Value.Get<FVector2D>();
+	MovementVector = Value.Get<FVector2D>();
 
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
