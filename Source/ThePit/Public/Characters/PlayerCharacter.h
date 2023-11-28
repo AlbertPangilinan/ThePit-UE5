@@ -8,8 +8,13 @@
 // Enhanced Input
 #include "InputActionValue.h"
 
-
 #include "PlayerCharacter.generated.h"
+
+
+// Camera
+class UCameraComponent;
+class USpringArmComponent;
+
 
 // Enhanced Input
 class UInputMappingContext;
@@ -49,5 +54,13 @@ protected:
 
 
 private:
+	// Functions
+	
+	// Variables
+	// Camera
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* CameraBoom;
 };
