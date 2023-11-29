@@ -27,7 +27,17 @@ protected:
 
 
 private:
+
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* HitscanOrigin;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float Damage = 20.f;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float RateOfFire = 857.f; // RPM
+
+public:
+	FORCEINLINE float GetRateOfFireSeconds() { return 60.f / RateOfFire; }
 
 };

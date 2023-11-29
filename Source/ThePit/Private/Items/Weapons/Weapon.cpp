@@ -31,31 +31,33 @@ void AWeapon::Fire()
 	AActor* WeaponOwner = GetOwner();
 	if (APlayerCharacter* PlayerCharacter = CastChecked<APlayerCharacter>(WeaponOwner))
 	{
-		if (UWorld* World = GetWorld())
-		{
-
-			UCameraComponent* ViewCamera = PlayerCharacter->GetCamera();
+		UCameraComponent* ViewCamera = PlayerCharacter->GetCamera();
 		
-			const FVector CameraLocation = ViewCamera->GetComponentLocation();
-			const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
-			const FVector Start = CameraLocation + CameraRotation;
-			const FVector End = Start + CameraRotation * 5000.f;
+		const FVector CameraLocation = ViewCamera->GetComponentLocation();
+		const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
+		const FVector Start = CameraLocation + CameraRotation;
+		const FVector End = Start + CameraRotation * 5000.f;
 
-			TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-			ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+		ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
 
-			TArray<AActor*> ActorsToIgnore;
-			ActorsToIgnore.Add(GetOwner());
+		TArray<AActor*> ActorsToIgnore;
+		ActorsToIgnore.Add(GetOwner());
 
-			FHitResult HitResult;
+		FHitResult LineOfSightResult;
+		FHitResult HitscanResult;
 
-			UKismetSystemLibrary::LineTraceSingleForObjects(this, Start, End, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::Persistent, HitResult, true, FColor::Blue);
+		UKismetSystemLibrary::LineTraceSingleForObjects(this, Start, End, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
 
-			if (HitResult.IsValidBlockingHit())
+		if (LineOfSightResult.IsValidBlockingHit())
+		{
+			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), LineOfSightResult.ImpactPoint, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+
+			if (HitscanResult.IsValidBlockingHit())
 			{
-				DrawDebugLine(World, HitscanOrigin->GetComponentLocation(), HitResult.ImpactPoint, FColor::Red, true);
-				DrawDebugSphere(World, HitResult.ImpactPoint, 25.f, 24, FColor::Green, true);
+				DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 5.f, 12, FColor::Green, false, 1.f);
 			}
 		}
+		
 	}
 }

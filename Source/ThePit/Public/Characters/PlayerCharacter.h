@@ -42,7 +42,9 @@ protected:
 	// Enhanced Input
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Fire();
+	void Attack();
+	void StartAttackTimer();
+	void ClearAttackTimer();
 
 	// Variables
 	// Enhanced Input
@@ -56,7 +58,7 @@ protected:
 	UInputAction* LookAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* FireAction;
+	UInputAction* AttackAction;
 
 
 	// Character State
@@ -90,6 +92,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
+
+
+	// Combat
+	FTimerHandle AttackTimer;
 
 public:
 	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }

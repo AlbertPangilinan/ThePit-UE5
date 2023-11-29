@@ -52,7 +52,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
-		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Fire);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
 
 	}
 }
@@ -105,8 +106,21 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	AddControllerYawInput(LookAxisVector.X);
 }
 
-void APlayerCharacter::Fire()
+void APlayerCharacter::Attack()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Fire"))
 	if (PrimaryWeapon == nullptr) return;
 	PrimaryWeapon->Fire();
+}
+
+void APlayerCharacter::StartAttackTimer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Begin %f"), PrimaryWeapon->GetRateOfFireSeconds())
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::Attack, PrimaryWeapon->GetRateOfFireSeconds(), true, 0.f);
+}
+
+void APlayerCharacter::ClearAttackTimer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("End"))
+	GetWorldTimerManager().ClearTimer(AttackTimer);
 }
