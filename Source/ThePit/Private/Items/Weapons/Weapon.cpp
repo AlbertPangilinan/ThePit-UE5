@@ -9,7 +9,8 @@
 // Camera
 #include "Camera/CameraComponent.h"
 
-// Kismet System Library
+// Kismet
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AWeapon::AWeapon()
@@ -52,6 +53,7 @@ void AWeapon::Fire()
 		if (LineOfSightResult.IsValidBlockingHit())
 		{
 			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), LineOfSightResult.ImpactPoint, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+			PlayFiringSound();
 
 			if (HitscanResult.IsValidBlockingHit())
 			{
@@ -60,4 +62,9 @@ void AWeapon::Fire()
 		}
 		
 	}
+}
+
+void AWeapon::PlayFiringSound()
+{
+	if (FiringSound) UGameplayStatics::PlaySoundAtLocation(this, FiringSound, GetActorLocation());
 }

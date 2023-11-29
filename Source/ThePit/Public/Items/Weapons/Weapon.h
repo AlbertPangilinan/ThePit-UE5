@@ -6,9 +6,10 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
-/**
- * 
- */
+// Combat
+class USoundBase;
+
+
 UCLASS()
 class THEPIT_API AWeapon : public AItem
 {
@@ -27,15 +28,24 @@ protected:
 
 
 private:
+	void PlayFiringSound();
 
+	// Variables
+	// Weapon Properties
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* HitscanOrigin;
 
+
+	// Combat
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float Damage = 20.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float RateOfFire = 857.f; // RPM
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	USoundBase* FiringSound;
+
 
 public:
 	FORCEINLINE float GetRateOfFireSeconds() { return 60.f / RateOfFire; }
