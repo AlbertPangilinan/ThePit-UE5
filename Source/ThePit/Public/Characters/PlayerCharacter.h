@@ -15,10 +15,13 @@
 class UCameraComponent;
 class USpringArmComponent;
 
-
 // Enhanced Input
 class UInputMappingContext;
 class UInputAction;
+
+// Combat
+class AWeapon;
+
 
 UCLASS()
 class THEPIT_API APlayerCharacter : public ACharacter
@@ -39,23 +42,42 @@ protected:
 	// Enhanced Input
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-
+	void Fire();
 
 	// Variables
 	// Enhanced Input
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputMappingContext* PlayerContext;
 
-	UPROPERTY(EditAnywhere, Category = Input)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* MoveAction;
 
-	UPROPERTY(EditAnywhere, Category = Input)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* FireAction;
 
 
 	// Character State
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D MovementVector;
+
+
+	// Combat
+	UPROPERTY(VisibleAnywhere, Category = Combat)
+	AWeapon* PrimaryWeapon;
+
+	UPROPERTY(VisibleAnywhere, Category = Combat)
+	AWeapon* SecondaryWeapon;
+
+	// TEMP
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TSubclassOf<class AWeapon> PrimaryWeaponClass;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TSubclassOf<class AWeapon> SecondaryWeaponClass;
+	// TEMP
 
 
 private:
@@ -68,4 +90,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
+
+public:
+	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
+
 };

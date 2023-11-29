@@ -12,6 +12,9 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
+// Combat
+#include "Items/Weapons/Weapon.h"
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -49,6 +52,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Fire);
+
 	}
 }
 
@@ -57,12 +62,24 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Setup Enhanced Input
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(PlayerContext, 0);
 		}
+	}
+
+	// TEMP: Equip Weapons
+	UWorld* World = GetWorld();
+	if (World && PrimaryWeaponClass && SecondaryWeaponClass)
+	{
+		AWeapon* DefaultPrimaryWeapon = World->SpawnActor<AWeapon>(PrimaryWeaponClass);
+		AWeapon* DefaultSecondaryWeapon = World->SpawnActor<AWeapon>(SecondaryWeaponClass);
+		DefaultPrimaryWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		PrimaryWeapon = DefaultPrimaryWeapon;
+
 	}
 	
 }
@@ -86,4 +103,10 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 	AddControllerPitchInput(LookAxisVector.Y);
 	AddControllerYawInput(LookAxisVector.X);
+}
+
+void APlayerCharacter::Fire()
+{
+	if (PrimaryWeapon == nullptr) return;
+	PrimaryWeapon->Fire();
 }
