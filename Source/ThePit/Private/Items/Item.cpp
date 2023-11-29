@@ -14,12 +14,13 @@ AItem::AItem()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Mesh Setup
-	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Item Mesh"));
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
 	ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	RootComponent = ItemMesh;
+	SetRootComponent(ItemMesh);
+	//RootComponent = ItemMesh;
 
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Interact Radius"));
+	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractRadius"));
 	Sphere->SetupAttachment(GetRootComponent());
 
 }

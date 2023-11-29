@@ -17,10 +17,17 @@
 #include "NiagaraFunctionLibrary.h"
 
 
+// Sets default values
 AWeapon::AWeapon()
 {
-	HitscanOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+	HitscanOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("HitscanOrigin"));
 	HitscanOrigin->SetupAttachment(GetRootComponent());
+
+	MuzzleFlashOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleFlashOrigin"));
+	MuzzleFlashOrigin->SetupAttachment(GetRootComponent());
 }
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
@@ -76,5 +83,5 @@ void AWeapon::PlayFiringSound()
 
 void AWeapon::SpawnMuzzleFlashSystem()
 {
-	if (MuzzleFlashEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, MuzzleFlashEffect, HitscanOrigin->GetComponentLocation());
+	if (MuzzleFlashEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, MuzzleFlashEffect, MuzzleFlashOrigin->GetComponentLocation());
 }

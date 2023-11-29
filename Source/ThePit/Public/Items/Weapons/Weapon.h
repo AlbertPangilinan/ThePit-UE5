@@ -39,13 +39,16 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* HitscanOrigin;
 
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* MuzzleFlashOrigin;
+
 
 	// Combat
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	float Damage = 20.f;
+	float Damage = 15.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	float RateOfFire = 857.f; // RPM
+	float RateOfFire = 750.f; // RPM
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	USoundBase* FiringSound;
