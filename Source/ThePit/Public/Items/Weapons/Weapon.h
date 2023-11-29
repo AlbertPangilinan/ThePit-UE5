@@ -7,6 +7,7 @@
 #include "Weapon.generated.h"
 
 // Combat
+class UNiagaraSystem;
 class USoundBase;
 
 
@@ -28,7 +29,10 @@ protected:
 
 
 private:
+	// Functions
+	// Combat
 	void PlayFiringSound();
+	void SpawnMuzzleFlashSystem();
 
 	// Variables
 	// Weapon Properties
@@ -45,6 +49,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	USoundBase* FiringSound;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	UNiagaraSystem* MuzzleFlashEffect;
 
 
 public:

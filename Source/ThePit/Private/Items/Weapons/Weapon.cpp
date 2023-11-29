@@ -13,6 +13,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+// Niagara
+#include "NiagaraFunctionLibrary.h"
+
+
 AWeapon::AWeapon()
 {
 	HitscanOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
@@ -54,6 +58,7 @@ void AWeapon::Fire()
 		{
 			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), LineOfSightResult.ImpactPoint, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
 			PlayFiringSound();
+			SpawnMuzzleFlashSystem();
 
 			if (HitscanResult.IsValidBlockingHit())
 			{
@@ -67,4 +72,9 @@ void AWeapon::Fire()
 void AWeapon::PlayFiringSound()
 {
 	if (FiringSound) UGameplayStatics::PlaySoundAtLocation(this, FiringSound, GetActorLocation());
+}
+
+void AWeapon::SpawnMuzzleFlashSystem()
+{
+	if (MuzzleFlashEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, MuzzleFlashEffect, HitscanOrigin->GetComponentLocation());
 }
