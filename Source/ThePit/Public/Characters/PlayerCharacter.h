@@ -34,6 +34,8 @@ public:
 	virtual void Tick(float DeltaTime) override; // Called every frame
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // Called to bind functionality to input
 
+	// Combat
+	void EquipWeapon();
 
 protected:
 	// Functions
@@ -84,7 +86,9 @@ protected:
 
 private:
 	// Functions
-	
+	void UpdateWeaponHUD();
+
+
 	// Variables
 	// Camera
 	UPROPERTY(VisibleAnywhere)

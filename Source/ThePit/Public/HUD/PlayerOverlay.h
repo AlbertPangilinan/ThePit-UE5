@@ -6,8 +6,12 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerOverlay.generated.h"
 
+
 // HUD Components
 class UTextBlock;
+
+// Weapon
+class AWeapon;
 
 
 /**
@@ -19,12 +23,12 @@ class THEPIT_API UPlayerOverlay : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	// Functions
+	void SetAmmoCount(AWeapon* CurrentWeapon);
+
 	// Variables
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* AmmoCount;
 
 
-private:
-	// Functions
-	void SetAmmoCount(int32 CurrentAmmoCount);
 };

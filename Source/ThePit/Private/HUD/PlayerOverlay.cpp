@@ -6,7 +6,10 @@
 // HUD Components
 #include "Components/TextBlock.h"
 
-void UPlayerOverlay::SetAmmoCount(int32 CurrentAmmoCount)
+// Weapon
+#include "Items/Weapons/Weapon.h"
+
+void UPlayerOverlay::SetAmmoCount(AWeapon* CurrentWeapon)
 {
-	if (AmmoCount) AmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d"), CurrentAmmoCount)));
+	if (CurrentWeapon) AmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), CurrentWeapon->GetAmmoCount(), CurrentWeapon->GetMagazineSize())));
 }

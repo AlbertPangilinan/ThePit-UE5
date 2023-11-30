@@ -15,6 +15,10 @@
 // Combat
 #include "Items/Weapons/Weapon.h"
 
+// HUD
+#include "HUD/PlayerHUD.h"
+#include "HUD/PlayerOverlay.h"
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -58,20 +62,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
-// Called when the game starts or when spawned
-void APlayerCharacter::BeginPlay()
+void APlayerCharacter::EquipWeapon()
 {
-	Super::BeginPlay();
-
-	// Setup Enhanced Input
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(PlayerContext, 0);
-		}
-	}
-
 	// TEMP: Equip Weapons
 	UWorld* World = GetWorld();
 	if (World && PrimaryWeaponClass && SecondaryWeaponClass)
@@ -82,7 +74,26 @@ void APlayerCharacter::BeginPlay()
 		PrimaryWeapon = DefaultPrimaryWeapon;
 
 	}
+
+	// Set weapon properties in HUD
+	UpdateWeaponHUD();
+}
+
+// Called when the game starts or when spawned
+void APlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	EquipWeapon();
 	
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		// Setup Enhanced Input
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(PlayerContext, 0);
+		}		
+	}	
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
@@ -111,6 +122,7 @@ void APlayerCharacter::Attack()
 	UE_LOG(LogTemp, Warning, TEXT("Fire"))
 	if (PrimaryWeapon == nullptr) return;
 	PrimaryWeapon->Fire();
+	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::StartAttackTimer()
@@ -123,4 +135,18 @@ void APlayerCharacter::ClearAttackTimer()
 {
 	UE_LOG(LogTemp, Warning, TEXT("End"))
 	GetWorldTimerManager().ClearTimer(AttackTimer);
+}
+
+void APlayerCharacter::UpdateWeaponHUD()
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
+		{
+			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
+			{
+				PlayerOverlay->SetAmmoCount(PrimaryWeapon);
+			}
+		}
+	}
 }
