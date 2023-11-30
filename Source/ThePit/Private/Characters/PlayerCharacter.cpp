@@ -77,6 +77,7 @@ void APlayerCharacter::EquipWeapon()
 		if (Weapon2Class)
 		{
 			AWeapon* Weapon2 = World->SpawnActor<AWeapon>(Weapon2Class);
+			Weapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
 			EquippedWeapon2 = Weapon2;
 		}
 	}
