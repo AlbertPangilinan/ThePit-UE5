@@ -34,8 +34,6 @@ public:
 	virtual void Tick(float DeltaTime) override; // Called every frame
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // Called to bind functionality to input
 
-	// Combat
-	void EquipWeapon();
 
 protected:
 	// Functions
@@ -47,6 +45,11 @@ protected:
 	void Attack();
 	void StartAttackTimer();
 	void ClearAttackTimer();
+
+
+	// Combat
+	void EquipWeapon();
+
 
 	// Variables
 	// Enhanced Input
@@ -70,17 +73,17 @@ protected:
 
 	// Combat
 	UPROPERTY(VisibleAnywhere, Category = Combat)
-	AWeapon* PrimaryWeapon;
+	AWeapon* EquippedWeapon1;
 
 	UPROPERTY(VisibleAnywhere, Category = Combat)
-	AWeapon* SecondaryWeapon;
+	AWeapon* EquippedWeapon2;
 
 	// TEMP
 	UPROPERTY(EditAnywhere, Category = Combat)
-	TSubclassOf<class AWeapon> PrimaryWeaponClass;
+	TSubclassOf<class AWeapon> Weapon1Class;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
-	TSubclassOf<class AWeapon> SecondaryWeaponClass;
+	TSubclassOf<class AWeapon> Weapon2Class;
 	// TEMP
 
 

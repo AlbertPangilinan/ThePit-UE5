@@ -35,7 +35,7 @@ private:
 	void SpawnMuzzleFlashSystem();
 
 	// Variables
-	// Weapon Properties
+	// Weapon Components
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* HitscanOrigin;
 
@@ -43,7 +43,7 @@ private:
 	USceneComponent* MuzzleFlashOrigin;
 
 
-	// Combat
+	// Weapon Properties
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float Damage = 15.f;
 

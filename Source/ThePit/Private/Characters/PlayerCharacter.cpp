@@ -65,17 +65,21 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void APlayerCharacter::EquipWeapon()
 {
 	// TEMP: Equip Weapons
-	UWorld* World = GetWorld();
-	if (World && PrimaryWeaponClass && SecondaryWeaponClass)
+	if (UWorld* World = GetWorld())
 	{
-		AWeapon* DefaultPrimaryWeapon = World->SpawnActor<AWeapon>(PrimaryWeaponClass);
-		AWeapon* DefaultSecondaryWeapon = World->SpawnActor<AWeapon>(SecondaryWeaponClass);
-		DefaultPrimaryWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		PrimaryWeapon = DefaultPrimaryWeapon;
+		if (Weapon1Class)
+		{
+			AWeapon* Weapon1 = World->SpawnActor<AWeapon>(Weapon1Class);
+			Weapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+			EquippedWeapon1 = Weapon1;
+		}
 
+		if (Weapon2Class)
+		{
+			AWeapon* Weapon2 = World->SpawnActor<AWeapon>(Weapon2Class);
+			EquippedWeapon2 = Weapon2;
+		}
 	}
-
-	// Set weapon properties in HUD
 	UpdateWeaponHUD();
 }
 
@@ -119,21 +123,18 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 
 void APlayerCharacter::Attack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Fire"))
-	if (PrimaryWeapon == nullptr) return;
-	PrimaryWeapon->Fire();
+	if (EquippedWeapon1 == nullptr) return;
+	EquippedWeapon1->Fire();
 	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::StartAttackTimer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Begin %f"), PrimaryWeapon->GetRateOfFireSeconds())
-	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::Attack, PrimaryWeapon->GetRateOfFireSeconds(), true, 0.f);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::Attack, EquippedWeapon1->GetRateOfFireSeconds(), true, 0.f);
 }
 
 void APlayerCharacter::ClearAttackTimer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("End"))
 	GetWorldTimerManager().ClearTimer(AttackTimer);
 }
 
@@ -145,7 +146,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 		{
 			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
 			{
-				PlayerOverlay->SetAmmoCount(PrimaryWeapon);
+				PlayerOverlay->SetAmmoCount(EquippedWeapon1);
 			}
 		}
 	}
