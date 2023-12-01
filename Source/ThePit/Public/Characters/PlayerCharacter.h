@@ -43,6 +43,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Attack();
+	void SwitchWeapon();
 	void StartAttackTimer();
 	void ClearAttackTimer();
 
@@ -65,6 +66,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* AttackAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SwitchWeaponAction;
+
 
 	// Character State
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -72,6 +76,9 @@ protected:
 
 
 	// Combat
+	UPROPERTY(VisibleAnywhere, Category = Combat)
+	AWeapon* ActiveWeapon;
+
 	UPROPERTY(VisibleAnywhere, Category = Combat)
 	AWeapon* EquippedWeapon1;
 

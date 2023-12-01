@@ -68,8 +68,6 @@ void AWeapon::Fire()
 			SpawnMuzzleFlashSystem();
 			AmmoCount -= 1;
 
-			UE_LOG(LogTemp, Warning, TEXT("%d/%d"), AmmoCount, MagazineSize);
-
 			if (AmmoCount <= 0)
 			{
 				AmmoCount = MagazineSize;

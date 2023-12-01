@@ -58,7 +58,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
-
+		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
 	}
 }
 
@@ -81,6 +81,7 @@ void APlayerCharacter::EquipWeapon()
 			EquippedWeapon2 = Weapon2;
 		}
 	}
+	ActiveWeapon = EquippedWeapon1;
 	UpdateWeaponHUD();
 }
 
@@ -124,8 +125,28 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 
 void APlayerCharacter::Attack()
 {
-	if (EquippedWeapon1 == nullptr) return;
-	EquippedWeapon1->Fire();
+	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
+	ActiveWeapon->Fire();
+	UpdateWeaponHUD();
+}
+
+void APlayerCharacter::SwitchWeapon()
+{
+	if (ActiveWeapon == EquippedWeapon1)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Switch to Wep2"))
+		ActiveWeapon = EquippedWeapon2;
+		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Switch to Wep1"))
+		ActiveWeapon = EquippedWeapon1;
+		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
+	}
 	UpdateWeaponHUD();
 }
 
@@ -147,7 +168,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 		{
 			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
 			{
-				PlayerOverlay->SetAmmoCount(EquippedWeapon1);
+				PlayerOverlay->SetAmmoCount(ActiveWeapon);
 			}
 		}
 	}
