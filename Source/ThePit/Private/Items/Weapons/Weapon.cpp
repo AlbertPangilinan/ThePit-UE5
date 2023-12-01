@@ -61,17 +61,18 @@ void AWeapon::Fire()
 
 		UKismetSystemLibrary::LineTraceSingleForObjects(this, Start, End, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
 
+		PlayFiringSound();
+		SpawnMuzzleFlashSystem();
+		AmmoCount -= 1;
+
+		if (AmmoCount <= 0)
+		{
+			AmmoCount = MagazineSize;
+		}
+
 		if (LineOfSightResult.IsValidBlockingHit())
 		{
 			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), LineOfSightResult.ImpactPoint, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
-			PlayFiringSound();
-			SpawnMuzzleFlashSystem();
-			AmmoCount -= 1;
-
-			if (AmmoCount <= 0)
-			{
-				AmmoCount = MagazineSize;
-			}
 
 			if (HitscanResult.IsValidBlockingHit())
 			{
