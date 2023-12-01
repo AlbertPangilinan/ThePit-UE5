@@ -35,7 +35,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
 	CameraBoom->TargetArmLength = 250.f;
-	CameraBoom->SocketOffset = FVector(0.f, 75.f, 50.f);
+	CameraBoom->SocketOffset = FVector(0.f, 50.f, 75.f);
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
 	ViewCamera->SetupAttachment(CameraBoom);
@@ -45,6 +45,12 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	const FVector CameraLoc = CameraBoom->GetComponentLocation();
+
+	UE_LOG(LogTemp, Warning, TEXT("X: %d"), CameraLoc.X);
+	UE_LOG(LogTemp, Warning, TEXT("Y: %d"), CameraLoc.Y);
+	UE_LOG(LogTemp, Warning, TEXT("Z: %d"), CameraLoc.Z);
 }
 
 // Called to bind functionality to input
