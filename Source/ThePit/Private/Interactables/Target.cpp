@@ -35,9 +35,9 @@ void ATarget::BeginPlay()
 
 }
 
-void ATarget::SpawnBulletImpactSystem()
+void ATarget::SpawnBulletImpactSystem(FVector ImpactPoint)
 {
-	if (BulletImpactEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BulletImpactEffect, GetActorLocation(), GetActorRotation());
+	if (BulletImpactEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BulletImpactEffect, ImpactPoint, GetActorRotation());
 }
 
 void ATarget::KnockOver()

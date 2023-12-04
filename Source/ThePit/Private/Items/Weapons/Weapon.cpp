@@ -6,6 +6,9 @@
 // Player Character
 #include "Characters/PlayerCharacter.h"
 
+// Target
+#include "Interactables/Target.h"
+
 // Camera
 #include "Camera/CameraComponent.h"
 
@@ -76,7 +79,15 @@ void AWeapon::Fire()
 
 			if (HitscanResult.IsValidBlockingHit())
 			{
-				DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 5.f, 12, FColor::Green, false, 1.f);
+				if (ATarget* Target = Cast<ATarget>(HitscanResult.GetActor()))
+				{
+					Target->SpawnBulletImpactSystem(HitscanResult.ImpactPoint);
+					Target->KnockOver();
+				}
+				else
+				{
+					DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 5.f, 12, FColor::Green, false, 1.f);
+				}
 			}
 		}
 		

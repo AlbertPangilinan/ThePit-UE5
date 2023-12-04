@@ -21,14 +21,14 @@ public:
 	virtual void Tick(float DeltaTime) override; // Called every frame
 
 
-protected:
-	virtual void BeginPlay() override; // Called when the game starts or when spawned
-
-
 	// Functions
 	// Interact
-	void SpawnBulletImpactSystem();
+	void SpawnBulletImpactSystem(FVector ImpactPoint);
 	void KnockOver();
+
+
+protected:
+	virtual void BeginPlay() override; // Called when the game starts or when spawned
 
 
 	// Variables
