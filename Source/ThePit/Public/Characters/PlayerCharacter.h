@@ -74,7 +74,7 @@ protected:
 	UInputAction* SwitchWeaponAction;
 
 
-	// Character State
+	// Movement
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D MovementVector;
 
@@ -117,5 +117,5 @@ private:
 
 public:
 	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
-
+	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 };
