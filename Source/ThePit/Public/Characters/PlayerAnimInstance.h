@@ -37,5 +37,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
 	FVector2D PlayerMovementVector;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	bool IsFalling;
 
 };
