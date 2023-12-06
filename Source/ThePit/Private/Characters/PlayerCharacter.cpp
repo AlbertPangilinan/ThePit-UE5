@@ -108,15 +108,23 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	MovementVector = Value.Get<FVector2D>();
+	double ForwardMovement = MovementVector.Y;
+	double RightMovement = MovementVector.X;
+
+	if (PlayerStance == EPlayerStance::EPS_Crouching)
+	{
+		ForwardMovement /= 2;
+		RightMovement /= 2;
+	}
 
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(ForwardDirection, MovementVector.Y);
+	AddMovementInput(ForwardDirection, ForwardMovement);
 
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(RightDirection, MovementVector.X);
+	AddMovementInput(RightDirection, RightMovement);
 }
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
