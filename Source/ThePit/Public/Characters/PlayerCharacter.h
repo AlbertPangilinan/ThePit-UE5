@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 
+// Enums
+#include "CharacterEnums.h"
+
 // Enhanced Input
 #include "InputActionValue.h"
 
@@ -43,6 +46,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
+	void ChangeStance();
 	void Attack();
 	void SwitchWeapon();
 	void StartAttackTimer();
@@ -66,6 +70,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ChangeStanceAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* AttackAction;
@@ -97,6 +104,8 @@ protected:
 	TSubclassOf<class AWeapon> Weapon2Class;
 	// TEMP
 
+	UPROPERTY(BlueprintReadOnly)
+	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
 
 private:
 	// Functions
@@ -117,5 +126,6 @@ private:
 
 public:
 	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
+	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 };

@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+
+// Enums
+#include "Characters/CharacterEnums.h"
+
 #include "PlayerAnimInstance.generated.h"
 
 class APlayerCharacter;
@@ -39,5 +43,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
 	bool IsFalling;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	EPlayerStance PlayerStance;
 
 };

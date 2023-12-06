@@ -2,6 +2,7 @@
 
 
 #include "Characters/PlayerCharacter.h"
+#include "Characters/CharacterEnums.h"
 
 // Enhanced Input
 #include "Components/InputComponent.h"
@@ -45,12 +46,6 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	const FVector CameraLoc = CameraBoom->GetComponentLocation();
-
-	UE_LOG(LogTemp, Warning, TEXT("X: %d"), CameraLoc.X);
-	UE_LOG(LogTemp, Warning, TEXT("Y: %d"), CameraLoc.Y);
-	UE_LOG(LogTemp, Warning, TEXT("Z: %d"), CameraLoc.Z);
 }
 
 // Called to bind functionality to input
@@ -63,6 +58,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Jump);
+		EnhancedInputComponent->BindAction(ChangeStanceAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeStance);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
@@ -132,7 +128,23 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 
 void APlayerCharacter::Jump()
 {
+	if (PlayerStance != EPlayerStance::EPS_Standing) return;
 	Super::Jump();
+}
+
+void APlayerCharacter::ChangeStance()
+{
+	switch (PlayerStance)
+	{
+		case EPlayerStance::EPS_Crouching:
+			PlayerStance = EPlayerStance::EPS_Standing;
+			break;
+		case EPlayerStance::EPS_Standing:
+			PlayerStance = EPlayerStance::EPS_Crouching;
+			break;
+		default:
+			break;
+	}
 }
 
 void APlayerCharacter::Attack()
@@ -146,7 +158,6 @@ void APlayerCharacter::SwitchWeapon()
 {
 	if (ActiveWeapon == EquippedWeapon1)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Switch to Wep2"))
 		ActiveWeapon = EquippedWeapon2;
 		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
@@ -154,7 +165,6 @@ void APlayerCharacter::SwitchWeapon()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Switch to Wep1"))
 		ActiveWeapon = EquippedWeapon1;
 		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
