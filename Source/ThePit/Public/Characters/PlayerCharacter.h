@@ -52,6 +52,7 @@ protected:
 	virtual void Jump() override;
 	void ChangeStance();
 	void Attack();
+	void ToggleADS();
 	void SwitchWeapon();
 	void StartAttackTimer();
 	void ClearAttackTimer();
@@ -84,10 +85,20 @@ protected:
 	UInputAction* AttackAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ADSAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* SwitchWeaponAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ReloadAction;
+
+	// Player State
+	UPROPERTY(BlueprintReadOnly)
+	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
+
+	UPROPERTY(BlueprintReadOnly)
+	EPlayerCombatState PlayerCombatState = EPlayerCombatState::EPC_Hipfire;
 
 
 	// Movement
@@ -113,8 +124,6 @@ protected:
 	TSubclassOf<class AWeapon> Weapon2Class;
 	// TEMP
 
-	UPROPERTY(BlueprintReadOnly)
-	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
 
 private:
 	// Functions

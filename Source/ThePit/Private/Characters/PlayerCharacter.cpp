@@ -61,6 +61,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(ChangeStanceAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeStance);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
+		EnhancedInputComponent->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::ToggleADS);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
 		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &APlayerCharacter::ReloadActiveWeapon);
 	}
@@ -144,6 +145,23 @@ void APlayerCharacter::Attack()
 	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
 	ActiveWeapon->Fire();
 	UpdateWeaponHUD();
+}
+
+void APlayerCharacter::ToggleADS()
+{
+	switch (PlayerCombatState)
+	{
+		case EPlayerCombatState::EPC_Hipfire:
+			PlayerCombatState = EPlayerCombatState::EPC_ADS;
+			CameraBoom->TargetArmLength = 100.f;
+			break;
+		case EPlayerCombatState::EPC_ADS:
+			PlayerCombatState = EPlayerCombatState::EPC_Hipfire;
+			CameraBoom->TargetArmLength = 250.f;
+			break;
+		default:
+			break;
+		}
 }
 
 void APlayerCharacter::SwitchWeapon()
