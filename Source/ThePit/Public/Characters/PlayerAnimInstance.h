@@ -29,22 +29,25 @@ public:
 
 
 	// Variables
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	APlayerCharacter* PlayerCharacter;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	UCharacterMovementComponent* PlayerCharacterMovement;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	float GroundSpeed;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	FVector2D PlayerMovementVector;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFalling;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
+	UPROPERTY(BlueprintReadOnly, Category = State)
 	EPlayerStance PlayerStance;
+
+	UPROPERTY(BlueprintReadOnly, Category = State)
+	int32 ActiveWeaponAmmoCount;
 
 };

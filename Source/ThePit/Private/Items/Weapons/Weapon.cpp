@@ -68,10 +68,10 @@ void AWeapon::Fire()
 		SpawnMuzzleFlashSystem();
 		AmmoCount -= 1;
 
-		if (AmmoCount <= 0)
-		{
-			AmmoCount = MagazineSize;
-		}
+		//if (AmmoCount <= 0)
+		//{
+		//	AmmoCount = MagazineSize;
+		//}
 
 		if (LineOfSightResult.IsValidBlockingHit())
 		{

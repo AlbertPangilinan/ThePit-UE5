@@ -65,27 +65,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
-void APlayerCharacter::EquipWeapon()
+int32 APlayerCharacter::GetActiveWeaponAmmoCount()
 {
-	// TEMP: Equip Weapons
-	if (UWorld* World = GetWorld())
-	{
-		if (Weapon1Class)
-		{
-			AWeapon* Weapon1 = World->SpawnActor<AWeapon>(Weapon1Class);
-			Weapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-			EquippedWeapon1 = Weapon1;
-		}
-
-		if (Weapon2Class)
-		{
-			AWeapon* Weapon2 = World->SpawnActor<AWeapon>(Weapon2Class);
-			Weapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
-			EquippedWeapon2 = Weapon2;
-		}
-	}
-	ActiveWeapon = EquippedWeapon1;
-	UpdateWeaponHUD();
+	if (ActiveWeapon) return ActiveWeapon->GetAmmoCount();
+	return -1;
 }
 
 // Called when the game starts or when spawned
@@ -188,6 +171,29 @@ void APlayerCharacter::StartAttackTimer()
 void APlayerCharacter::ClearAttackTimer()
 {
 	GetWorldTimerManager().ClearTimer(AttackTimer);
+}
+
+void APlayerCharacter::EquipWeapon()
+{
+	// TEMP: Equip Weapons
+	if (UWorld* World = GetWorld())
+	{
+		if (Weapon1Class)
+		{
+			AWeapon* Weapon1 = World->SpawnActor<AWeapon>(Weapon1Class);
+			Weapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+			EquippedWeapon1 = Weapon1;
+		}
+
+		if (Weapon2Class)
+		{
+			AWeapon* Weapon2 = World->SpawnActor<AWeapon>(Weapon2Class);
+			Weapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
+			EquippedWeapon2 = Weapon2;
+		}
+	}
+	ActiveWeapon = EquippedWeapon1;
+	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::UpdateWeaponHUD()
