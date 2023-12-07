@@ -86,6 +86,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* SwitchWeaponAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ReloadAction;
+
 
 	// Movement
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

@@ -62,6 +62,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &APlayerCharacter::ReloadActiveWeapon);
 	}
 }
 
@@ -199,8 +200,11 @@ void APlayerCharacter::EquipWeapon()
 void APlayerCharacter::ReloadActiveWeapon()
 {
 	if (ActiveWeapon == nullptr) return;
-	ActiveWeapon->Reload();
-	UpdateWeaponHUD();
+	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
+	{
+		ActiveWeapon->Reload();
+		UpdateWeaponHUD();
+	}
 }
 
 void APlayerCharacter::UpdateWeaponHUD()
