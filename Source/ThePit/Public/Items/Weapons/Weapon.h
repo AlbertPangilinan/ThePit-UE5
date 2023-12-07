@@ -45,10 +45,10 @@ private:
 
 	// Weapon Properties
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	float Damage = 15.f;
+	float Damage = 20.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	float RateOfFire = 750.f; // RPM
+	float RateOfFire = 600.f; // RPM
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float Spread = 25.f;

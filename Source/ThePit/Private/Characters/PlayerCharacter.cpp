@@ -142,12 +142,15 @@ void APlayerCharacter::ChangeStance()
 void APlayerCharacter::Attack()
 {
 	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
+	UE_LOG(LogTemp, Warning, TEXT("%d"), ActiveWeapon->GetRateOfFireSeconds());
 	ActiveWeapon->Fire();
 	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::SwitchWeapon()
 {
+	ClearAttackTimer();
+
 	if (ActiveWeapon == EquippedWeapon1)
 	{
 		ActiveWeapon = EquippedWeapon2;
@@ -161,12 +164,13 @@ void APlayerCharacter::SwitchWeapon()
 		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
 	}
+
 	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::StartAttackTimer()
 {
-	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::Attack, EquippedWeapon1->GetRateOfFireSeconds(), true, 0.f);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::Attack, ActiveWeapon->GetRateOfFireSeconds(), true, 0.f);
 }
 
 void APlayerCharacter::ClearAttackTimer()
