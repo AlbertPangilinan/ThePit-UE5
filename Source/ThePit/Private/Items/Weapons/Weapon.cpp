@@ -70,7 +70,12 @@ void AWeapon::Fire()
 
 		if (LineOfSightResult.IsValidBlockingHit())
 		{
-			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), LineOfSightResult.ImpactPoint, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+			float SpreadX = FMath::RandRange(-Spread, Spread);
+			float SpreadY = FMath::RandRange(-Spread, Spread);
+			float SpreadZ = FMath::RandRange(-Spread, Spread);
+			FVector HitscanWithSpread = LineOfSightResult.ImpactPoint + FVector(SpreadX, SpreadY, SpreadZ);
+
+			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), HitscanWithSpread, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
 
 			if (HitscanResult.IsValidBlockingHit())
 			{

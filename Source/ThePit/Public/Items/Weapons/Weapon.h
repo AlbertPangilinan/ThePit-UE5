@@ -51,6 +51,9 @@ private:
 	float RateOfFire = 750.f; // RPM
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float Spread = 25.f;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	int32 MagazineSize = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
