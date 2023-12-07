@@ -50,8 +50,8 @@ void AWeapon::Fire()
 		
 		const FVector CameraLocation = ViewCamera->GetComponentLocation();
 		const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
-		const FVector Start = CameraLocation + CameraRotation;
-		const FVector End = Start + CameraRotation * 5000.f;
+		const FVector LineOfSightStart = CameraLocation + CameraRotation;
+		const FVector LineOfSightEnd = LineOfSightStart + CameraRotation * 5000.f;
 
 		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 		ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
@@ -62,7 +62,7 @@ void AWeapon::Fire()
 		FHitResult LineOfSightResult;
 		FHitResult HitscanResult;
 
-		UKismetSystemLibrary::LineTraceSingleForObjects(this, Start, End, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
+		UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
 
 		PlayFiringSound();
 		SpawnMuzzleFlashSystem();
@@ -73,9 +73,12 @@ void AWeapon::Fire()
 			float SpreadX = FMath::RandRange(-Spread, Spread);
 			float SpreadY = FMath::RandRange(-Spread, Spread);
 			float SpreadZ = FMath::RandRange(-Spread, Spread);
-			FVector HitscanWithSpread = LineOfSightResult.ImpactPoint + FVector(SpreadX, SpreadY, SpreadZ);
 
-			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), HitscanWithSpread, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+			FVector LineOfSightWithSpread = LineOfSightResult.ImpactPoint + FVector(SpreadX, SpreadY, SpreadZ);
+			FVector HitscanStart = HitscanOrigin->GetComponentLocation();
+			FVector HitscanEnd = (LineOfSightWithSpread - HitscanStart) * 5000.f;
+
+			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
 
 			if (HitscanResult.IsValidBlockingHit())
 			{
@@ -86,8 +89,9 @@ void AWeapon::Fire()
 				}
 				else
 				{
-					DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 5.f, 12, FColor::Green, false, 1.f);
+					DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1.f);
 				}
+				UE_LOG(LogTemp, Warning, TEXT("Fire"));
 			}
 		}
 		

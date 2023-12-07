@@ -142,7 +142,6 @@ void APlayerCharacter::ChangeStance()
 void APlayerCharacter::Attack()
 {
 	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
-	UE_LOG(LogTemp, Warning, TEXT("%d"), ActiveWeapon->GetRateOfFireSeconds());
 	ActiveWeapon->Fire();
 	UpdateWeaponHUD();
 }
