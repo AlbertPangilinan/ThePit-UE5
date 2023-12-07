@@ -23,9 +23,9 @@ public:
 	// Combat
 	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 	void Fire();
+	void Reload();
 
 protected:
-
 
 
 private:

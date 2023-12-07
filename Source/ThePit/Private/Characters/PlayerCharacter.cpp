@@ -65,12 +65,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
-int32 APlayerCharacter::GetActiveWeaponAmmoCount()
-{
-	if (ActiveWeapon) return ActiveWeapon->GetAmmoCount();
-	return -1;
-}
-
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
@@ -86,6 +80,12 @@ void APlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(PlayerContext, 0);
 		}		
 	}	
+}
+
+AWeapon* APlayerCharacter::GetActiveWeapon()
+{
+	if (ActiveWeapon) return ActiveWeapon;
+	return nullptr;
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
@@ -193,6 +193,13 @@ void APlayerCharacter::EquipWeapon()
 		}
 	}
 	ActiveWeapon = EquippedWeapon1;
+	UpdateWeaponHUD();
+}
+
+void APlayerCharacter::ReloadActiveWeapon()
+{
+	if (ActiveWeapon == nullptr) return;
+	ActiveWeapon->Reload();
 	UpdateWeaponHUD();
 }
 

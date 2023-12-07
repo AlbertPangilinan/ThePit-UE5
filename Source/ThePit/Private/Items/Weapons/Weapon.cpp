@@ -68,11 +68,6 @@ void AWeapon::Fire()
 		SpawnMuzzleFlashSystem();
 		AmmoCount -= 1;
 
-		//if (AmmoCount <= 0)
-		//{
-		//	AmmoCount = MagazineSize;
-		//}
-
 		if (LineOfSightResult.IsValidBlockingHit())
 		{
 			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanOrigin->GetComponentLocation(), LineOfSightResult.ImpactPoint, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
@@ -92,6 +87,11 @@ void AWeapon::Fire()
 		}
 		
 	}
+}
+
+void AWeapon::Reload()
+{
+	AmmoCount = MagazineSize;
 }
 
 void AWeapon::PlayFiringSound()

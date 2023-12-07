@@ -37,12 +37,14 @@ public:
 	virtual void Tick(float DeltaTime) override; // Called every frame
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // Called to bind functionality to input
 
+	UFUNCTION(BlueprintCallable)
+	AWeapon* GetActiveWeapon();
 
-	int32 GetActiveWeaponAmmoCount();
 
 protected:
 	// Functions
 	virtual void BeginPlay() override; // Called when the game starts or when spawned
+
 
 	// Enhanced Input
 	void Move(const FInputActionValue& Value);
@@ -58,6 +60,8 @@ protected:
 	// Combat
 	void EquipWeapon();
 
+	UFUNCTION(BlueprintCallable)
+	void ReloadActiveWeapon();
 
 	// Variables
 	// Enhanced Input

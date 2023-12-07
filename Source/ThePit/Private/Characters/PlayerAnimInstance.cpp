@@ -6,6 +6,9 @@
 // Player Character
 #include "Characters/PlayerCharacter.h"
 
+// Weapon
+#include "Items/Weapons/Weapon.h"
+
 // Movement
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -34,6 +37,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		GroundSpeed = UKismetMathLibrary::VSizeXY(PlayerCharacterMovement->Velocity);
 		IsFalling = PlayerCharacterMovement->IsFalling();
 		PlayerStance = PlayerCharacter->GetPlayerStance();
-		ActiveWeaponAmmoCount = PlayerCharacter->GetActiveWeaponAmmoCount();
+		AWeapon* ActiveWeapon = PlayerCharacter->GetActiveWeapon();
+		if (ActiveWeapon) ActiveWeaponAmmoCount = ActiveWeapon->GetAmmoCount();
 	}
 }
