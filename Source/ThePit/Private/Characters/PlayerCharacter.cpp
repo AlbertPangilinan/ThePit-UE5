@@ -9,6 +9,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+// Kismet
+#include "Kismet/GameplayStatics.h"
+
 // Camera
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -155,19 +158,35 @@ void APlayerCharacter::Attack()
 
 void APlayerCharacter::ToggleADS()
 {
+	float TargetCameraZoom;
+
 	switch (PlayerCombatState)
 	{
 		case EPlayerCombatState::EPC_Hipfire:
 			PlayerCombatState = EPlayerCombatState::EPC_ADS;
-			CameraBoom->TargetArmLength = 100.f;
+			TargetCameraZoom = 100.f;
+			/*while (CameraBoom->TargetArmLength != TargetCameraZoom)
+			{
+				CameraBoom->TargetArmLength -= 5.f;
+			}*/
 			break;
 		case EPlayerCombatState::EPC_ADS:
 			PlayerCombatState = EPlayerCombatState::EPC_Hipfire;
-			CameraBoom->TargetArmLength = 250.f;
+			TargetCameraZoom = 250.f;
+			/*while (CameraBoom->TargetArmLength != TargetCameraZoom)
+			{
+				CameraBoom->TargetArmLength += 5.f;
+			}*/
 			break;
 		default:
 			break;
-		}
+	}
+
+	while (!FMath::IsNearlyEqual(CameraBoom->TargetArmLength, TargetCameraZoom))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%f->%f"), CameraBoom->TargetArmLength, TargetCameraZoom);
+		CameraBoom->TargetArmLength = FMath::FInterpConstantTo(CameraBoom->TargetArmLength, TargetCameraZoom, UGameplayStatics::GetWorldDeltaSeconds(this), 2.f);
+	}
 }
 
 void APlayerCharacter::SwitchWeapon()
