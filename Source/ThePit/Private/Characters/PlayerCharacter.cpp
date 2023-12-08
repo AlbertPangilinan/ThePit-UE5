@@ -96,10 +96,16 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 	double ForwardMovement = MovementVector.Y;
 	double RightMovement = MovementVector.X;
 
+	if (PlayerCombatState == EPlayerCombatState::EPC_ADS)
+	{
+		ForwardMovement *= 0.75;
+		RightMovement *= 0.75;
+	}
+
 	if (PlayerStance == EPlayerStance::EPS_Crouching)
 	{
-		ForwardMovement /= 2;
-		RightMovement /= 2;
+		ForwardMovement *= 0.75;
+		RightMovement *= 0.75;
 	}
 
 	const FRotator Rotation = Controller->GetControlRotation();
