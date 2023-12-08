@@ -145,5 +145,6 @@ private:
 public:
 	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
+	FORCEINLINE EPlayerCombatState GetPlayerCombatState() const { return PlayerCombatState; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 };

@@ -6,6 +6,9 @@
 // Player Character
 #include "Characters/PlayerCharacter.h"
 
+// Movement
+#include "GameFramework/CharacterMovementComponent.h"
+
 // Target
 #include "Interactables/Target.h"
 
@@ -14,6 +17,7 @@
 
 // Kismet
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Niagara
@@ -72,7 +76,12 @@ void AWeapon::Fire()
 		{
 			FVector HitscanStart = HitscanOrigin->GetComponentLocation();
 
-			double SpreadMultiplier = FMath::Max(1.0, (LineOfSightResult.ImpactPoint - HitscanStart).Length() * 0.001);
+			double SpreadMultiplier = FMath::Max(1.0, (LineOfSightResult.ImpactPoint - HitscanStart).Length() * 0.002);
+
+			if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
+			if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.7;
+			if (PlayerCharacter->GetPlayerCombatState() == EPlayerCombatState::EPC_ADS) SpreadMultiplier *= 0.5;
+
 			float SpreadX = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
 			float SpreadY = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
 			float SpreadZ = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
@@ -91,7 +100,7 @@ void AWeapon::Fire()
 				}
 				else
 				{
-					DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1.f);
+					DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1000.f);
 				}
 				UE_LOG(LogTemp, Warning, TEXT("Fire"));
 			}
