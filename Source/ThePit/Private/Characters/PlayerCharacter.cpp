@@ -3,6 +3,7 @@
 
 #include "Characters/PlayerCharacter.h"
 #include "Characters/CharacterEnums.h"
+#include "Components/CapsuleComponent.h"
 
 // Enhanced Input
 #include "Components/InputComponent.h"
@@ -101,14 +102,14 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 	if (PlayerCombatState == EPlayerCombatState::EPC_ADS)
 	{
-		ForwardMovement *= 0.75;
-		RightMovement *= 0.75;
+		ForwardMovement *= 0.5;
+		RightMovement *= 0.5;
 	}
 
 	if (PlayerStance == EPlayerStance::EPS_Crouching)
 	{
-		ForwardMovement *= 0.75;
-		RightMovement *= 0.75;
+		ForwardMovement *= 0.5;
+		RightMovement *= 0.5;
 	}
 
 	const FRotator Rotation = Controller->GetControlRotation();
@@ -136,16 +137,36 @@ void APlayerCharacter::Jump()
 
 void APlayerCharacter::ChangeStance()
 {
+	FVector TargetCameraPosition;
+
 	switch (PlayerStance)
 	{
 		case EPlayerStance::EPS_Crouching:
 			PlayerStance = EPlayerStance::EPS_Standing;
+			TargetCameraPosition = FVector(0.f, 50.f, 75.f);
+			/*if (UCapsuleComponent* PlayerCapsule = Cast<UCapsuleComponent>(GetRootComponent()))
+			{
+				PlayerCapsule->SetCapsuleHalfHeight(90.f);
+				PlayerCapsule->SetCapsuleRadius(35.f);
+			}*/
 			break;
 		case EPlayerStance::EPS_Standing:
 			PlayerStance = EPlayerStance::EPS_Crouching;
+			TargetCameraPosition = FVector(0.f, 50.f, 25.f);
+			/*if (UCapsuleComponent* PlayerCapsule = Cast<UCapsuleComponent>(GetRootComponent()))
+			{
+				PlayerCapsule->SetCapsuleHalfHeight(60.f);
+				PlayerCapsule->SetCapsuleRadius(60.f);
+			}*/
 			break;
 		default:
 			break;
+	}
+
+	while (!FMath::IsNearlyEqual(CameraBoom->SocketOffset.Z, TargetCameraPosition.Z))
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("%d"), CameraBoom->SocketOffset.Z);
+		CameraBoom->SocketOffset = FMath::VInterpConstantTo(CameraBoom->SocketOffset, TargetCameraPosition, UGameplayStatics::GetWorldDeltaSeconds(this), 1.f);
 	}
 }
 
@@ -184,8 +205,8 @@ void APlayerCharacter::ToggleADS()
 
 	while (!FMath::IsNearlyEqual(CameraBoom->TargetArmLength, TargetCameraZoom))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%f->%f"), CameraBoom->TargetArmLength, TargetCameraZoom);
-		CameraBoom->TargetArmLength = FMath::FInterpConstantTo(CameraBoom->TargetArmLength, TargetCameraZoom, UGameplayStatics::GetWorldDeltaSeconds(this), 2.f);
+		//UE_LOG(LogTemp, Warning, TEXT("%f"), CameraBoom->TargetArmLength);
+		CameraBoom->TargetArmLength = FMath::FInterpConstantTo(CameraBoom->TargetArmLength, TargetCameraZoom, UGameplayStatics::GetWorldDeltaSeconds(this), 1.f);
 	}
 }
 
