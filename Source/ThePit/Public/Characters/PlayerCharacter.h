@@ -68,6 +68,9 @@ protected:
 	void EquipWeapon();
 
 	UFUNCTION(BlueprintCallable)
+	void PlayReloadAnim();
+
+	UFUNCTION(BlueprintCallable)
 	void ReloadActiveWeapon();
 
 	// Variables
@@ -134,7 +137,6 @@ protected:
 private:
 	// Functions
 	void UpdateWeaponHUD();
-
 
 	// Variables
 	// Camera

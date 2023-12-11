@@ -67,7 +67,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
 		EnhancedInputComponent->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::ToggleADS);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
-		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &APlayerCharacter::ReloadActiveWeapon);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &APlayerCharacter::PlayReloadAnim);
 	}
 }
 
@@ -175,7 +175,7 @@ void APlayerCharacter::Attack()
 	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
 	ActiveWeapon->Fire();
 
-	switch (PlayerStance)
+	/*switch (PlayerStance)
 	{
 	case EPlayerStance::EPS_Standing:
 		PlayMontageSection(RunCombatMontage, FName("Fire"));
@@ -185,7 +185,7 @@ void APlayerCharacter::Attack()
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	UpdateWeaponHUD();
 }
@@ -287,25 +287,28 @@ void APlayerCharacter::EquipWeapon()
 	UpdateWeaponHUD();
 }
 
+void APlayerCharacter::PlayReloadAnim()
+{
+	if (ActiveWeapon->GetAmmoCount() >= ActiveWeapon->GetMagazineSize()) return;
+	switch (PlayerStance)
+	{
+	case EPlayerStance::EPS_Standing:
+		PlayMontageSection(RunCombatMontage, FName("Reload"));
+		break;
+	case EPlayerStance::EPS_Crouching:
+		PlayMontageSection(CrouchCombatMontage, FName("Reload"));
+		break;
+	default:
+		break;
+	}
+}
+
 void APlayerCharacter::ReloadActiveWeapon()
 {
 	if (ActiveWeapon == nullptr) return;
 	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
 	{
 		ActiveWeapon->Reload();
-
-		switch (PlayerStance)
-		{
-		case EPlayerStance::EPS_Standing:
-			PlayMontageSection(RunCombatMontage, FName("Reload"));
-			break;
-		case EPlayerStance::EPS_Crouching:
-			PlayMontageSection(CrouchCombatMontage, FName("Reload"));
-			break;
-		default:
-			break;
-		}
-
 		UpdateWeaponHUD();
 	}
 }
