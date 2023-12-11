@@ -22,6 +22,9 @@ class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 
+// Animation
+class UAnimMontage;
+
 // Combat
 class AWeapon;
 
@@ -56,6 +59,9 @@ protected:
 	void SwitchWeapon();
 	void StartAttackTimer();
 	void ClearAttackTimer();
+
+	// Animation
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
 
 
 	// Combat
@@ -137,6 +143,14 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
+
+
+	// Animation
+	UPROPERTY(EditDefaultsOnly, Category = Animation)
+	UAnimMontage* RunCombatMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = Animation)
+	UAnimMontage* CrouchCombatMontage;
 
 
 	// Combat

@@ -174,6 +174,19 @@ void APlayerCharacter::Attack()
 {
 	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
 	ActiveWeapon->Fire();
+
+	switch (PlayerStance)
+	{
+	case EPlayerStance::EPS_Standing:
+		PlayMontageSection(RunCombatMontage, FName("Fire"));
+		break;
+	case EPlayerStance::EPS_Crouching:
+		PlayMontageSection(CrouchCombatMontage, FName("Fire"));
+		break;
+	default:
+		break;
+	}
+
 	UpdateWeaponHUD();
 }
 
@@ -241,6 +254,16 @@ void APlayerCharacter::ClearAttackTimer()
 	GetWorldTimerManager().ClearTimer(AttackTimer);
 }
 
+void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && Montage)
+	{
+		AnimInstance->Montage_Play(Montage);
+		AnimInstance->Montage_JumpToSection(SectionName, Montage);
+	}
+}
+
 void APlayerCharacter::EquipWeapon()
 {
 	// TEMP: Equip Weapons
@@ -270,6 +293,19 @@ void APlayerCharacter::ReloadActiveWeapon()
 	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
 	{
 		ActiveWeapon->Reload();
+
+		switch (PlayerStance)
+		{
+		case EPlayerStance::EPS_Standing:
+			PlayMontageSection(RunCombatMontage, FName("Reload"));
+			break;
+		case EPlayerStance::EPS_Crouching:
+			PlayMontageSection(CrouchCombatMontage, FName("Reload"));
+			break;
+		default:
+			break;
+		}
+
 		UpdateWeaponHUD();
 	}
 }
