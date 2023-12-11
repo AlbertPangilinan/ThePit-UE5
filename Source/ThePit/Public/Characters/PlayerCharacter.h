@@ -107,7 +107,7 @@ protected:
 	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
 
 	UPROPERTY(BlueprintReadOnly)
-	EPlayerCombatState PlayerCombatState = EPlayerCombatState::EPC_Hipfire;
+	EPlayerAimState PlayerAimState = EPlayerAimState::EPAS_Hipfire;
 
 
 	// Movement
@@ -161,6 +161,6 @@ private:
 public:
 	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
-	FORCEINLINE EPlayerCombatState GetPlayerCombatState() const { return PlayerCombatState; }
+	FORCEINLINE EPlayerAimState GetPlayerAimState() const { return PlayerAimState; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 };

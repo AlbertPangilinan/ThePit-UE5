@@ -9,8 +9,16 @@ enum class EPlayerStance : uint8
 };
 
 UENUM(BlueprintType)
+enum class EPlayerAimState : uint8
+{
+	EPAS_Hipfire UMETA(DisplayName = "Hipfire"),
+	EPAS_ADS UMETA(DisplayName = "ADS"),
+};
+
+UENUM(BlueprintType)
 enum class EPlayerCombatState : uint8
 {
-	EPC_Hipfire UMETA(DisplayName = "Hipfire"),
-	EPC_ADS UMETA(DisplayName = "ADS"),
+	EPCS_Aiming UMETA(DisplayName = "Aiming"),
+	EPCS_Firing UMETA(DisplayName = "Firing"),
+	EPCS_Reloading UMETA(DisplayName = "Reloading"),
 };

@@ -100,7 +100,7 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 	double ForwardMovement = MovementVector.Y;
 	double RightMovement = MovementVector.X;
 
-	if (PlayerCombatState == EPlayerCombatState::EPC_ADS)
+	if (PlayerAimState == EPlayerAimState::EPAS_ADS)
 	{
 		ForwardMovement *= 0.5;
 		RightMovement *= 0.5;
@@ -194,18 +194,18 @@ void APlayerCharacter::ToggleADS()
 {
 	float TargetCameraZoom;
 
-	switch (PlayerCombatState)
+	switch (PlayerAimState)
 	{
-		case EPlayerCombatState::EPC_Hipfire:
-			PlayerCombatState = EPlayerCombatState::EPC_ADS;
+		case EPlayerAimState::EPAS_Hipfire:
+			PlayerAimState = EPlayerAimState::EPAS_ADS;
 			TargetCameraZoom = 100.f;
 			/*while (CameraBoom->TargetArmLength != TargetCameraZoom)
 			{
 				CameraBoom->TargetArmLength -= 5.f;
 			}*/
 			break;
-		case EPlayerCombatState::EPC_ADS:
-			PlayerCombatState = EPlayerCombatState::EPC_Hipfire;
+		case EPlayerAimState::EPAS_ADS:
+			PlayerAimState = EPlayerAimState::EPAS_Hipfire;
 			TargetCameraZoom = 250.f;
 			/*while (CameraBoom->TargetArmLength != TargetCameraZoom)
 			{

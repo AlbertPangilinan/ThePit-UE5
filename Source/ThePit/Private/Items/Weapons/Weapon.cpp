@@ -80,7 +80,7 @@ void AWeapon::Fire()
 
 			if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
 			if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.7;
-			if (PlayerCharacter->GetPlayerCombatState() == EPlayerCombatState::EPC_ADS) SpreadMultiplier *= 0.5;
+			if (PlayerCharacter->GetPlayerAimState() == EPlayerAimState::EPAS_ADS) SpreadMultiplier *= 0.5;
 
 			float SpreadX = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
 			float SpreadY = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
