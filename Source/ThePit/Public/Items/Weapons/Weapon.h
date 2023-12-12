@@ -45,6 +45,9 @@ private:
 
 	// Weapon Properties
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	FString WeaponName = "WeaponName";
+	
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float Damage = 20.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
