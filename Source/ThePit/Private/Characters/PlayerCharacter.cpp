@@ -172,8 +172,10 @@ void APlayerCharacter::ChangeStance()
 
 void APlayerCharacter::Attack()
 {
-	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0) return;
+	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	PlayerCombatState = EPlayerCombatState::EPCS_Firing;
 	ActiveWeapon->Fire();
+	UpdateWeaponHUD();
 
 	/*switch (PlayerStance)
 	{
@@ -186,8 +188,6 @@ void APlayerCharacter::Attack()
 	default:
 		break;
 	}*/
-
-	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::ToggleADS()
@@ -199,18 +199,10 @@ void APlayerCharacter::ToggleADS()
 		case EPlayerAimState::EPAS_Hipfire:
 			PlayerAimState = EPlayerAimState::EPAS_ADS;
 			TargetCameraZoom = 100.f;
-			/*while (CameraBoom->TargetArmLength != TargetCameraZoom)
-			{
-				CameraBoom->TargetArmLength -= 5.f;
-			}*/
 			break;
 		case EPlayerAimState::EPAS_ADS:
 			PlayerAimState = EPlayerAimState::EPAS_Hipfire;
 			TargetCameraZoom = 250.f;
-			/*while (CameraBoom->TargetArmLength != TargetCameraZoom)
-			{
-				CameraBoom->TargetArmLength += 5.f;
-			}*/
 			break;
 		default:
 			break;
@@ -218,7 +210,6 @@ void APlayerCharacter::ToggleADS()
 
 	while (!FMath::IsNearlyEqual(CameraBoom->TargetArmLength, TargetCameraZoom))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("%f"), CameraBoom->TargetArmLength);
 		CameraBoom->TargetArmLength = FMath::FInterpConstantTo(CameraBoom->TargetArmLength, TargetCameraZoom, UGameplayStatics::GetWorldDeltaSeconds(this), 1.f);
 	}
 }
@@ -289,7 +280,8 @@ void APlayerCharacter::EquipWeapon()
 
 void APlayerCharacter::PlayReloadAnim()
 {
-	if (ActiveWeapon->GetAmmoCount() >= ActiveWeapon->GetMagazineSize()) return;
+	if (ActiveWeapon->GetAmmoCount() >= ActiveWeapon->GetMagazineSize() || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
 	switch (PlayerStance)
 	{
 	case EPlayerStance::EPS_Standing:
@@ -310,6 +302,7 @@ void APlayerCharacter::ReloadActiveWeapon()
 	{
 		ActiveWeapon->Reload();
 		UpdateWeaponHUD();
+		PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 	}
 }
 

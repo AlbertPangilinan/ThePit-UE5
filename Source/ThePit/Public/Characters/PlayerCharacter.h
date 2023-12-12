@@ -102,12 +102,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ReloadAction;
 
+
 	// Player State
 	UPROPERTY(BlueprintReadOnly)
 	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
 
 	UPROPERTY(BlueprintReadOnly)
 	EPlayerAimState PlayerAimState = EPlayerAimState::EPAS_Hipfire;
+
+	UPROPERTY(BlueprintReadOnly)
+	EPlayerCombatState PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 
 
 	// Movement
@@ -162,5 +166,6 @@ public:
 	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
 	FORCEINLINE EPlayerAimState GetPlayerAimState() const { return PlayerAimState; }
+	FORCEINLINE EPlayerCombatState GetPlayerCombatState() const { return PlayerCombatState; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 };
