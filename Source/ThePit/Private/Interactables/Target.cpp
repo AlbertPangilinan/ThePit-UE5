@@ -42,5 +42,9 @@ void ATarget::SpawnBulletImpactSystem(FVector ImpactPoint)
 
 void ATarget::KnockOver()
 {
-	SetActorRotation(GetActorRotation() + FRotator(0.f, 0.f, 90.f));
+	if (!IsHit)
+	{
+		SetActorRotation(GetActorRotation() + FRotator(0.f, 0.f, 90.f));
+		IsHit = true;
+	}
 }

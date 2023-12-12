@@ -42,5 +42,6 @@ protected:
 
 
 private:	
-
+	// Variables
+	bool IsHit = false;
 };
