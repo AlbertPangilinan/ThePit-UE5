@@ -13,3 +13,8 @@ void UPlayerOverlay::SetAmmoCount(AWeapon* CurrentWeapon)
 {
 	if (CurrentWeapon) AmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), CurrentWeapon->GetAmmoCount(), CurrentWeapon->GetMagazineSize())));
 }
+
+void UPlayerOverlay::SetWeaponName(AWeapon* CurrentWeapon)
+{
+	if (CurrentWeapon) WeaponName->SetText(FText::FromString(CurrentWeapon->GetWeaponName()));
+}

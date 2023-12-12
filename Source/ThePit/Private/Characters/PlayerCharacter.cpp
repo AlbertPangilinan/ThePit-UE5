@@ -315,6 +315,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
 			{
 				PlayerOverlay->SetAmmoCount(ActiveWeapon);
+				PlayerOverlay->SetWeaponName(ActiveWeapon);
 			}
 		}
 	}

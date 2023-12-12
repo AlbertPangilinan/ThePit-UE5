@@ -25,10 +25,14 @@ class THEPIT_API UPlayerOverlay : public UUserWidget
 public:
 	// Functions
 	void SetAmmoCount(AWeapon* CurrentWeapon);
+	void SetWeaponName(AWeapon* CurrentWeapon);
+
 
 	// Variables
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* AmmoCount;
 
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* WeaponName;
 
 };

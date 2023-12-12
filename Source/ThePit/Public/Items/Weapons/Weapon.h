@@ -70,6 +70,7 @@ private:
 
 
 public:
+	FORCEINLINE FString GetWeaponName() const { return WeaponName;  }
 	FORCEINLINE float GetRateOfFireSeconds() { return 60.f / RateOfFire; }
 	FORCEINLINE int32 GetAmmoCount() const { return AmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
