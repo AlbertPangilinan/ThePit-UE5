@@ -42,6 +42,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* MuzzleFlashOrigin;
 
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* LeftHandPlacement;
+
 
 	// Weapon Properties
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
