@@ -18,3 +18,23 @@ void UPlayerOverlay::SetWeaponName(AWeapon* CurrentWeapon)
 {
 	if (CurrentWeapon) WeaponName->SetText(FText::FromString(CurrentWeapon->GetWeaponName()));
 }
+
+void UPlayerOverlay::SetFireMode(AWeapon* CurrentWeapon)
+{
+	if (CurrentWeapon == nullptr) return;
+
+	EWeaponFireMode CurrentFireMode = CurrentWeapon->GetFireMode();
+
+	switch (CurrentFireMode)
+	{
+	case EWeaponFireMode::EWFM_FullAuto:
+		FireMode->SetText(FText::FromString(FString::Printf(TEXT("Full Auto"))));
+		break;
+	case EWeaponFireMode::EWFM_SemiAuto:
+		FireMode->SetText(FText::FromString(FString::Printf(TEXT("Semi Auto"))));
+		break;
+	default:
+		break;
+	}
+
+}

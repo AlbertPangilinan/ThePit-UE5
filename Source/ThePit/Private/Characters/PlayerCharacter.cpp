@@ -338,6 +338,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 			{
 				PlayerOverlay->SetAmmoCount(ActiveWeapon);
 				PlayerOverlay->SetWeaponName(ActiveWeapon);
+				PlayerOverlay->SetFireMode(ActiveWeapon);
 			}
 		}
 	}
