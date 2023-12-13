@@ -2,13 +2,16 @@
 
 
 #include "Characters/PlayerCharacter.h"
-#include "Characters/CharacterEnums.h"
 #include "Components/CapsuleComponent.h"
 
 // Enhanced Input
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+
+// Enums
+#include "Characters/CharacterEnums.h"
+#include "Items/Weapons/WeaponEnums.h"
 
 // Kismet
 #include "Kismet/GameplayStatics.h"
@@ -211,6 +214,25 @@ void APlayerCharacter::ToggleADS()
 	while (!FMath::IsNearlyEqual(CameraBoom->TargetArmLength, TargetCameraZoom))
 	{
 		CameraBoom->TargetArmLength = FMath::FInterpConstantTo(CameraBoom->TargetArmLength, TargetCameraZoom, UGameplayStatics::GetWorldDeltaSeconds(this), 1.f);
+	}
+}
+
+void APlayerCharacter::CycleFireMode()
+{
+	if (ActiveWeapon == nullptr) return;
+
+	EWeaponFireMode CurrentFireMode = ActiveWeapon->GetFireMode();
+
+	switch (CurrentFireMode)
+	{
+	case EWeaponFireMode::EWFM_FullAuto:
+		ActiveWeapon->SetFireMode(EWeaponFireMode::EWFM_SemiAuto);
+		break;
+	case EWeaponFireMode::EWFM_SemiAuto:
+		ActiveWeapon->SetFireMode(EWeaponFireMode::EWFM_FullAuto);
+		break;
+	default:
+		break;
 	}
 }
 

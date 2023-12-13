@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Items/Item.h"
+
+// Enums
+#include "WeaponEnums.h"
+
 #include "Weapon.generated.h"
 
 // Combat
@@ -57,6 +61,9 @@ private:
 	float RateOfFire = 600.f; // RPM
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	EWeaponFireMode FireMode = EWeaponFireMode::EWFM_FullAuto;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float Spread = 25.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
@@ -75,6 +82,8 @@ private:
 public:
 	FORCEINLINE FString GetWeaponName() const { return WeaponName;  }
 	FORCEINLINE float GetRateOfFireSeconds() { return 60.f / RateOfFire; }
+	FORCEINLINE EWeaponFireMode GetFireMode() { return FireMode; }
+	FORCEINLINE void SetFireMode(EWeaponFireMode NewFireMode) { FireMode = NewFireMode; }
 	FORCEINLINE int32 GetAmmoCount() const { return AmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
 };

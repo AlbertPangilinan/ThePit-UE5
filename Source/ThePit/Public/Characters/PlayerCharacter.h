@@ -56,6 +56,7 @@ protected:
 	void ChangeStance();
 	void Attack();
 	void ToggleADS();
+	void CycleFireMode();
 	void SwitchWeapon();
 	void StartAttackTimer();
 	void ClearAttackTimer();
