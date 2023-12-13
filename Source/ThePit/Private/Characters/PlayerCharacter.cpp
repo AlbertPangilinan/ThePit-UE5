@@ -66,7 +66,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Jump);
 		EnhancedInputComponent->BindAction(ChangeStanceAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeStance);
-		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::Attack);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
 		EnhancedInputComponent->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::ToggleADS);
 		EnhancedInputComponent->BindAction(CycleFireModeAction, ETriggerEvent::Started, this, &APlayerCharacter::CycleFireMode);
@@ -176,10 +176,22 @@ void APlayerCharacter::ChangeStance()
 
 void APlayerCharacter::Attack()
 {
-	if (ActiveWeapon == nullptr || ActiveWeapon->GetAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	if (ActiveWeapon == nullptr) return;
+	
 	PlayerCombatState = EPlayerCombatState::EPCS_Firing;
-	ActiveWeapon->Fire();
-	UpdateWeaponHUD();
+	EWeaponFireMode CurrentFireMode = ActiveWeapon->GetFireMode();
+
+	switch (CurrentFireMode)
+	{
+	case EWeaponFireMode::EWFM_FullAuto:
+		AttackFullAuto();
+		break;
+	case EWeaponFireMode::EWFM_SemiAuto:
+		AttackSemiAuto();
+		break;
+	default:
+		break;
+	}
 
 	/*switch (PlayerStance)
 	{
@@ -192,6 +204,18 @@ void APlayerCharacter::Attack()
 	default:
 		break;
 	}*/
+}
+
+void APlayerCharacter::AttackFullAuto()
+{
+	StartAttackTimer();
+}
+
+void APlayerCharacter::AttackSemiAuto()
+{
+	if (ActiveWeapon->GetAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	ActiveWeapon->Fire();
+	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::ToggleADS()
@@ -262,7 +286,7 @@ void APlayerCharacter::SwitchWeapon()
 
 void APlayerCharacter::StartAttackTimer()
 {
-	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::Attack, ActiveWeapon->GetRateOfFireSeconds(), true, 0.f);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &APlayerCharacter::AttackSemiAuto, ActiveWeapon->GetRateOfFireSeconds(), true, 0.f);
 }
 
 void APlayerCharacter::ClearAttackTimer()

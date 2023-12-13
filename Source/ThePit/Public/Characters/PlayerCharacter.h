@@ -55,6 +55,8 @@ protected:
 	virtual void Jump() override;
 	void ChangeStance();
 	void Attack();
+	void AttackFullAuto();
+	void AttackSemiAuto();
 	void ToggleADS();
 	void CycleFireMode();
 	void SwitchWeapon();
