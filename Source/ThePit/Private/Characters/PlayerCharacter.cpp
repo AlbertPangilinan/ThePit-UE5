@@ -69,8 +69,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::StartAttackTimer);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::ClearAttackTimer);
 		EnhancedInputComponent->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::ToggleADS);
+		EnhancedInputComponent->BindAction(CycleFireModeAction, ETriggerEvent::Started, this, &APlayerCharacter::CycleFireMode);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
-		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &APlayerCharacter::PlayReloadAnim);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::PlayReloadAnim);
 	}
 }
 
@@ -234,6 +235,8 @@ void APlayerCharacter::CycleFireMode()
 	default:
 		break;
 	}
+
+	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::SwitchWeapon()

@@ -98,6 +98,9 @@ protected:
 	UInputAction* ADSAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* CycleFireModeAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* SwitchWeaponAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
