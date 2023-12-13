@@ -69,12 +69,13 @@ protected:
 
 	// Combat
 	void EquipWeapon();
-
-	UFUNCTION(BlueprintCallable)
 	void PlayReloadAnim();
 
 	UFUNCTION(BlueprintCallable)
-	void ReloadActiveWeapon();
+	void StartReloadActiveWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	void EndReloadActiveWeapon();
 
 	// Variables
 	// Enhanced Input

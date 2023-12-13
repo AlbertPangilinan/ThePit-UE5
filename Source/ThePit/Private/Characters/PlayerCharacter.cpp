@@ -177,7 +177,8 @@ void APlayerCharacter::ChangeStance()
 void APlayerCharacter::Attack()
 {
 	if (ActiveWeapon == nullptr) return;
-	
+	if (PlayerCombatState == EPlayerCombatState::EPCS_Reloading) StopAnimMontage();
+
 	PlayerCombatState = EPlayerCombatState::EPCS_Firing;
 	EWeaponFireMode CurrentFireMode = ActiveWeapon->GetFireMode();
 
@@ -331,6 +332,7 @@ void APlayerCharacter::EquipWeapon()
 void APlayerCharacter::PlayReloadAnim()
 {
 	if (ActiveWeapon->GetAmmoCount() >= ActiveWeapon->GetMagazineSize() || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	ClearAttackTimer();
 	PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
 	switch (PlayerStance)
 	{
@@ -345,7 +347,17 @@ void APlayerCharacter::PlayReloadAnim()
 	}
 }
 
-void APlayerCharacter::ReloadActiveWeapon()
+void APlayerCharacter::StartReloadActiveWeapon()
+{
+	if (ActiveWeapon == nullptr) return;
+	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
+	{
+		ClearAttackTimer();
+		PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
+	}
+}
+
+void APlayerCharacter::EndReloadActiveWeapon()
 {
 	if (ActiveWeapon == nullptr) return;
 	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
