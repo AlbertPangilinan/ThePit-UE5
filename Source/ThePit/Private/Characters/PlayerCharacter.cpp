@@ -266,6 +266,7 @@ void APlayerCharacter::CycleFireMode()
 void APlayerCharacter::SwitchWeapon()
 {
 	ClearAttackTimer();
+	StopAnimMontage();
 
 	if (ActiveWeapon == EquippedWeapon1)
 	{
