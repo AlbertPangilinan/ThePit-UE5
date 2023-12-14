@@ -82,15 +82,12 @@ FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArr
 	FHitResult LineOfSightResult;
 
 	UCameraComponent* ViewCamera = PlayerCharacter->GetCamera();
-
 	const FVector CameraLocation = ViewCamera->GetComponentLocation();
 	const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
 	const FVector LineOfSightStart = CameraLocation + CameraRotation;
 	const FVector LineOfSightEnd = LineOfSightStart + CameraRotation * 5000.f;
 
-
 	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
-
 	return LineOfSightResult;
 }
 
@@ -99,23 +96,31 @@ FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<T
 	FHitResult HitscanResult;
 
 	FVector HitscanStart = HitscanOrigin->GetComponentLocation();
+	FVector HitscanEnd = CalculateTrajectory(PlayerCharacter, LineOfSightResult.ImpactPoint - HitscanStart);
 
-	double SpreadMultiplier = FMath::Max(1.0, (LineOfSightResult.ImpactPoint - HitscanStart).Length() * 0.002);
-
-	if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
-	if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.7;
-	if (PlayerCharacter->GetPlayerAimState() == EPlayerAimState::EPAS_ADS) SpreadMultiplier *= 0.5;
-
-	float SpreadX = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
-	float SpreadY = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
-	float SpreadZ = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
-
-	FVector LineOfSightWithSpread = LineOfSightResult.ImpactPoint + FVector(SpreadX, SpreadY, SpreadZ);
-	FVector HitscanEnd = (LineOfSightWithSpread - HitscanStart) * 5000.f;
-
-	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitscanResult, true, FColor::Red);
 
 	return HitscanResult;
+}
+
+float AWeapon::CalculateAxisDeviation(APlayerCharacter* PlayerCharacter)
+{
+	float SpreadMultiplier = 1.f;
+
+	if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
+	if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.75;
+	if (PlayerCharacter->GetPlayerAimState() == EPlayerAimState::EPAS_ADS) SpreadMultiplier *= 0.5;
+
+	return FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
+}
+
+FVector AWeapon::CalculateTrajectory(APlayerCharacter* PlayerCharacter, FVector HitscanPath)
+{
+	float SpreadX = CalculateAxisDeviation(PlayerCharacter);
+	float SpreadY = CalculateAxisDeviation(PlayerCharacter);
+	float SpreadZ = CalculateAxisDeviation(PlayerCharacter);
+
+	return FRotator(SpreadX, SpreadY, SpreadZ).RotateVector(HitscanPath) * 5000.f;
 }
 
 void AWeapon::KnockOverTarget(FHitResult HitscanResult)

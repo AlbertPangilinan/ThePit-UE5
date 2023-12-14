@@ -40,6 +40,8 @@ private:
 	// Combat
 	FHitResult LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore);
 	FHitResult HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult);
+	float CalculateAxisDeviation(APlayerCharacter* PlayerCharacter);
+	FVector CalculateTrajectory(APlayerCharacter* PlayerCharacter, FVector HitscanPath);
 	void KnockOverTarget(FHitResult HitscanResult);
 	void PlayFiringFX();
 
@@ -70,7 +72,7 @@ private:
 	EWeaponFireMode FireMode = EWeaponFireMode::EWFM_FullAuto;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	float Spread = 25.f;
+	float Spread = 2.5f; // Deviation from crosshair centre in degrees
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	int32 MagazineSize = 30;
