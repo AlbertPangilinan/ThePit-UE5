@@ -53,12 +53,7 @@ void AWeapon::Fire()
 	AActor* WeaponOwner = GetOwner();
 	if (APlayerCharacter* PlayerCharacter = CastChecked<APlayerCharacter>(WeaponOwner))
 	{
-		UCameraComponent* ViewCamera = PlayerCharacter->GetCamera();
-		
-		const FVector CameraLocation = ViewCamera->GetComponentLocation();
-		const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
-		const FVector LineOfSightStart = CameraLocation + CameraRotation;
-		const FVector LineOfSightEnd = LineOfSightStart + CameraRotation * 5000.f;
+		PlayFiringFX();
 
 		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 		ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
@@ -66,49 +61,14 @@ void AWeapon::Fire()
 		TArray<AActor*> ActorsToIgnore;
 		ActorsToIgnore.Add(GetOwner());
 
-		FHitResult LineOfSightResult;
-		FHitResult HitscanResult;
-
-		UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
-
-		PlayFiringSound();
-		SpawnMuzzleFlashSystem();
-		AmmoCount -= 1;
+		FHitResult LineOfSightResult = LineOfSightLineTrace(PlayerCharacter, ObjectTypes, ActorsToIgnore);
 
 		if (LineOfSightResult.IsValidBlockingHit())
 		{
-			FVector HitscanStart = HitscanOrigin->GetComponentLocation();
+			FHitResult HitscanResult = HitscanLineTrace(PlayerCharacter, ObjectTypes, ActorsToIgnore, LineOfSightResult);
 
-			double SpreadMultiplier = FMath::Max(1.0, (LineOfSightResult.ImpactPoint - HitscanStart).Length() * 0.002);
-
-			if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
-			if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.7;
-			if (PlayerCharacter->GetPlayerAimState() == EPlayerAimState::EPAS_ADS) SpreadMultiplier *= 0.5;
-
-			float SpreadX = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
-			float SpreadY = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
-			float SpreadZ = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
-
-			FVector LineOfSightWithSpread = LineOfSightResult.ImpactPoint + FVector(SpreadX, SpreadY, SpreadZ);
-			FVector HitscanEnd = (LineOfSightWithSpread - HitscanStart) * 5000.f;
-
-			UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
-
-			if (HitscanResult.IsValidBlockingHit())
-			{
-				if (ATarget* Target = Cast<ATarget>(HitscanResult.GetActor()))
-				{
-					Target->SpawnBulletImpactSystem(HitscanResult.ImpactPoint);
-					Target->KnockOver();
-				}
-				else
-				{
-					DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1000.f);
-				}
-				UE_LOG(LogTemp, Warning, TEXT("Fire"));
-			}
-		}
-		
+			if (HitscanResult.IsValidBlockingHit()) KnockOverTarget(HitscanResult);
+		}		
 	}
 }
 
@@ -117,12 +77,63 @@ void AWeapon::Reload()
 	AmmoCount = MagazineSize;
 }
 
-void AWeapon::PlayFiringSound()
+FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
 {
-	if (FiringSound) UGameplayStatics::PlaySoundAtLocation(this, FiringSound, GetActorLocation());
+	FHitResult LineOfSightResult;
+
+	UCameraComponent* ViewCamera = PlayerCharacter->GetCamera();
+
+	const FVector CameraLocation = ViewCamera->GetComponentLocation();
+	const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
+	const FVector LineOfSightStart = CameraLocation + CameraRotation;
+	const FVector LineOfSightEnd = LineOfSightStart + CameraRotation * 5000.f;
+
+
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
+
+	return LineOfSightResult;
 }
 
-void AWeapon::SpawnMuzzleFlashSystem()
+FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult)
 {
+	FHitResult HitscanResult;
+
+	FVector HitscanStart = HitscanOrigin->GetComponentLocation();
+
+	double SpreadMultiplier = FMath::Max(1.0, (LineOfSightResult.ImpactPoint - HitscanStart).Length() * 0.002);
+
+	if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
+	if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.7;
+	if (PlayerCharacter->GetPlayerAimState() == EPlayerAimState::EPAS_ADS) SpreadMultiplier *= 0.5;
+
+	float SpreadX = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
+	float SpreadY = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
+	float SpreadZ = FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
+
+	FVector LineOfSightWithSpread = LineOfSightResult.ImpactPoint + FVector(SpreadX, SpreadY, SpreadZ);
+	FVector HitscanEnd = (LineOfSightWithSpread - HitscanStart) * 5000.f;
+
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+
+	return HitscanResult;
+}
+
+void AWeapon::KnockOverTarget(FHitResult HitscanResult)
+{
+	if (ATarget* Target = Cast<ATarget>(HitscanResult.GetActor()))
+	{
+		Target->SpawnBulletImpactSystem(HitscanResult.ImpactPoint);
+		Target->KnockOver();
+	}
+	else
+	{
+		DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1000.f);
+	}
+}
+
+void AWeapon::PlayFiringFX()
+{
+	if (FiringSound) UGameplayStatics::PlaySoundAtLocation(this, FiringSound, GetActorLocation());
 	if (MuzzleFlashEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, MuzzleFlashEffect, MuzzleFlashOrigin->GetComponentLocation(), MuzzleFlashOrigin->GetComponentRotation());
+	AmmoCount -= 1;
 }

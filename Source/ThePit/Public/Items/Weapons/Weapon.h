@@ -14,6 +14,8 @@
 class UNiagaraSystem;
 class USoundBase;
 
+class APlayerCharacter;
+
 
 UCLASS()
 class THEPIT_API AWeapon : public AItem
@@ -29,14 +31,18 @@ public:
 	void Fire();
 	void Reload();
 
+
 protected:
 
 
 private:
 	// Functions
 	// Combat
-	void PlayFiringSound();
-	void SpawnMuzzleFlashSystem();
+	FHitResult LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore);
+	FHitResult HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult);
+	void KnockOverTarget(FHitResult HitscanResult);
+	void PlayFiringFX();
+
 
 	// Variables
 	// Weapon Components
