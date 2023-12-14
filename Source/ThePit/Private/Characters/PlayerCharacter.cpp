@@ -2,7 +2,10 @@
 
 
 #include "Characters/PlayerCharacter.h"
+
+// Core
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Enhanced Input
 #include "Components/InputComponent.h"
@@ -15,6 +18,7 @@
 
 // Kismet
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Camera
 #include "Camera/CameraComponent.h"
@@ -53,6 +57,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	CalculateSpreadMultiplier();
 }
 
 // Called to bind functionality to input
@@ -96,6 +101,11 @@ AWeapon* APlayerCharacter::GetActiveWeapon()
 {
 	if (ActiveWeapon) return ActiveWeapon;
 	return nullptr;
+}
+
+double APlayerCharacter::GetGroundSpeed()
+{
+	return UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity);
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
@@ -304,6 +314,15 @@ void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& Se
 		AnimInstance->Montage_Play(Montage);
 		AnimInstance->Montage_JumpToSection(SectionName, Montage);
 	}
+}
+
+void APlayerCharacter::CalculateSpreadMultiplier()
+{
+	float CurrentSpreadMultiplier = 1.f;
+	if (GetGroundSpeed() > 0.0) CurrentSpreadMultiplier *= 1.25;
+	if (GetPlayerStance() == EPlayerStance::EPS_Crouching) CurrentSpreadMultiplier *= 0.75;
+	if (GetPlayerAimState() == EPlayerAimState::EPAS_ADS) CurrentSpreadMultiplier *= 0.5;
+	SpreadMultiplier = CurrentSpreadMultiplier;
 }
 
 void APlayerCharacter::EquipWeapon()

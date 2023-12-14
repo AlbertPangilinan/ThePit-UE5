@@ -43,6 +43,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AWeapon* GetActiveWeapon();
 
+	double GetGroundSpeed();
 
 protected:
 	// Functions
@@ -68,6 +69,7 @@ protected:
 
 
 	// Combat
+	void CalculateSpreadMultiplier();
 	void EquipWeapon();
 	void PlayReloadAnim();
 
@@ -136,6 +138,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Combat)
 	AWeapon* EquippedWeapon2;
 
+	UPROPERTY(VisibleAnywhere, Category = Combat)
+	float SpreadMultiplier = 1.f;
+
+
 	// TEMP
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TSubclassOf<class AWeapon> Weapon1Class;
@@ -174,5 +180,6 @@ public:
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
 	FORCEINLINE EPlayerAimState GetPlayerAimState() const { return PlayerAimState; }
 	FORCEINLINE EPlayerCombatState GetPlayerCombatState() const { return PlayerCombatState; }
+	FORCEINLINE float GetSpreadMultiplier() const { return SpreadMultiplier; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 };

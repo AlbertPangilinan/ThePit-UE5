@@ -105,13 +105,7 @@ FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<T
 
 float AWeapon::CalculateAxisDeviation(APlayerCharacter* PlayerCharacter)
 {
-	float SpreadMultiplier = 1.f;
-
-	if (UKismetMathLibrary::VSizeXY(PlayerCharacter->GetCharacterMovement()->Velocity) > 0.f) SpreadMultiplier *= 1.25;
-	if (PlayerCharacter->GetPlayerStance() == EPlayerStance::EPS_Crouching) SpreadMultiplier *= 0.75;
-	if (PlayerCharacter->GetPlayerAimState() == EPlayerAimState::EPAS_ADS) SpreadMultiplier *= 0.5;
-
-	return FMath::RandRange(-Spread, Spread) * SpreadMultiplier;
+	return FMath::RandRange(-Spread, Spread) * PlayerCharacter->GetSpreadMultiplier();
 }
 
 FVector AWeapon::CalculateTrajectory(APlayerCharacter* PlayerCharacter, FVector HitscanPath)

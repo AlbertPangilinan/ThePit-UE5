@@ -12,9 +12,6 @@
 // Movement
 #include "GameFramework/CharacterMovementComponent.h"
 
-// Kismet
-#include "Kismet/KismetMathLibrary.h"
-
 
 void UPlayerAnimInstance::NativeInitializeAnimation()
 {
@@ -34,7 +31,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	if (PlayerCharacterMovement)
 	{
 		PlayerMovementVector = PlayerCharacter->GetMovementVector();
-		GroundSpeed = UKismetMathLibrary::VSizeXY(PlayerCharacterMovement->Velocity);
+		GroundSpeed = PlayerCharacter->GetGroundSpeed();
 		IsFalling = PlayerCharacterMovement->IsFalling();
 		PlayerStance = PlayerCharacter->GetPlayerStance();
 		AWeapon* ActiveWeapon = PlayerCharacter->GetActiveWeapon();
