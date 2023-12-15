@@ -3,11 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+// Widget
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+
 #include "PlayerOverlay.generated.h"
 
 
 // HUD Components
+class UImage;
 class UTextBlock;
 
 // Weapon
@@ -24,12 +29,25 @@ class THEPIT_API UPlayerOverlay : public UUserWidget
 	
 public:
 	// Functions
+	void SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon);
 	void SetAmmoCount(AWeapon* CurrentWeapon);
 	void SetWeaponName(AWeapon* CurrentWeapon);
 	void SetFireMode(AWeapon* CurrentWeapon);
 
 
 	// Variables
+	UPROPERTY(meta = (BindWidget))
+	UImage* CrosshairTop;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* CrosshairBot;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* CrosshairLeft;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* CrosshairRight;
+
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* AmmoCount;
 
@@ -38,4 +56,10 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* FireMode;
+
+private:
+	// Variables
+	const float CrosshairOffset = 30.f;
+
+
 };

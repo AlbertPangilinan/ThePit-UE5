@@ -323,6 +323,7 @@ void APlayerCharacter::CalculateSpreadMultiplier()
 	if (GetPlayerStance() == EPlayerStance::EPS_Crouching) CurrentSpreadMultiplier *= 0.75;
 	if (GetPlayerAimState() == EPlayerAimState::EPAS_ADS) CurrentSpreadMultiplier *= 0.5;
 	SpreadMultiplier = CurrentSpreadMultiplier;
+	UpdateWeaponHUD();
 }
 
 void APlayerCharacter::EquipWeapon()
@@ -395,6 +396,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 		{
 			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
 			{
+				PlayerOverlay->SetCrosshairSpread(SpreadMultiplier, ActiveWeapon);
 				PlayerOverlay->SetAmmoCount(ActiveWeapon);
 				PlayerOverlay->SetWeaponName(ActiveWeapon);
 				PlayerOverlay->SetFireMode(ActiveWeapon);

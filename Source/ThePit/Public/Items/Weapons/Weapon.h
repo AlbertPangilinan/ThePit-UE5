@@ -75,10 +75,10 @@ private:
 	float Spread = 2.5f; // Deviation from crosshair centre in degrees
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	int32 MagazineSize = 30;
+	int32 AmmoCount = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	int32 AmmoCount = 30;
+	int32 MagazineSize = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	USoundBase* FiringSound;
@@ -90,8 +90,9 @@ private:
 public:
 	FORCEINLINE FString GetWeaponName() const { return WeaponName;  }
 	FORCEINLINE float GetRateOfFireSeconds() { return 60.f / RateOfFire; }
-	FORCEINLINE EWeaponFireMode GetFireMode() { return FireMode; }
+	FORCEINLINE EWeaponFireMode GetFireMode() const { return FireMode; }
 	FORCEINLINE void SetFireMode(EWeaponFireMode NewFireMode) { FireMode = NewFireMode; }
+	FORCEINLINE float GetSpread() const { return Spread; }
 	FORCEINLINE int32 GetAmmoCount() const { return AmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
 };
