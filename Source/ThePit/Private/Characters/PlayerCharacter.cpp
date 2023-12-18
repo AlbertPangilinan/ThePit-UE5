@@ -280,6 +280,9 @@ void APlayerCharacter::SwitchWeapon()
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
 
+	RunCombatMontage->BlendIn = 0.f;
+	CrouchCombatMontage->BlendIn = 0.f;
+
 	switch (PlayerStance)
 	{
 	case EPlayerStance::EPS_Standing:
@@ -385,6 +388,9 @@ void APlayerCharacter::StartWeaponSwitch()
 
 void APlayerCharacter::EndWeaponSwitch()
 {
+	RunCombatMontage->BlendIn = 0.25f;
+	CrouchCombatMontage->BlendIn = 0.25f;
+
 	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 }
 
