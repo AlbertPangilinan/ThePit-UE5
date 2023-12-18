@@ -278,6 +278,7 @@ void APlayerCharacter::SwitchWeapon()
 {
 	ClearAttackTimer();
 	StopAnimMontage();
+	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
 
 	if (ActiveWeapon == EquippedWeapon1)
 	{
@@ -293,7 +294,24 @@ void APlayerCharacter::SwitchWeapon()
 		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
 	}
 
+	switch (PlayerStance)
+	{
+	case EPlayerStance::EPS_Standing:
+		PlayMontageSection(RunCombatMontage, FName("Equip"));
+		break;
+	case EPlayerStance::EPS_Crouching:
+		PlayMontageSection(CrouchCombatMontage, FName("Equip"));
+		break;
+	default:
+		break;
+	}
+
 	UpdateWeaponHUD();
+}
+
+void APlayerCharacter::EndWeaponSwitch()
+{
+	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 }
 
 void APlayerCharacter::StartAttackTimer()

@@ -21,4 +21,5 @@ enum class EPlayerCombatState : uint8
 	EPCS_Aiming UMETA(DisplayName = "Aiming"),
 	EPCS_Firing UMETA(DisplayName = "Firing"),
 	EPCS_Reloading UMETA(DisplayName = "Reloading"),
+	EPCS_SwitchingWeapons UMETA(DisplayName = "Switching Weapons"),
 };
