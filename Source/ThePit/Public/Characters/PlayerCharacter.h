@@ -61,7 +61,6 @@ protected:
 	void ToggleADS();
 	void CycleFireMode();
 	void SwitchWeapon();
-	void EndWeaponSwitch();
 	void StartAttackTimer();
 	void ClearAttackTimer();
 
@@ -73,6 +72,12 @@ protected:
 	void CalculateSpreadMultiplier();
 	void EquipWeapon();
 	void PlayReloadAnim();
+
+	UFUNCTION(BlueprintCallable)
+	void StartWeaponSwitch();
+
+	UFUNCTION(BlueprintCallable)
+	void EndWeaponSwitch();
 
 	UFUNCTION(BlueprintCallable)
 	void StartReloadActiveWeapon();

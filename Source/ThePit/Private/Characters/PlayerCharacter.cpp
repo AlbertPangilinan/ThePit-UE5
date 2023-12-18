@@ -186,7 +186,7 @@ void APlayerCharacter::ChangeStance()
 
 void APlayerCharacter::Attack()
 {
-	if (ActiveWeapon == nullptr) return;
+	if (ActiveWeapon == nullptr || PlayerCombatState == EPlayerCombatState::EPCS_SwitchingWeapons) return;
 	if (PlayerCombatState == EPlayerCombatState::EPCS_Reloading) StopAnimMontage();
 
 	PlayerCombatState = EPlayerCombatState::EPCS_Firing;
@@ -280,20 +280,6 @@ void APlayerCharacter::SwitchWeapon()
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
 
-	if (ActiveWeapon == EquippedWeapon1)
-	{
-		ActiveWeapon = EquippedWeapon2;
-		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
-
-	}
-	else
-	{
-		ActiveWeapon = EquippedWeapon1;
-		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
-	}
-
 	switch (PlayerStance)
 	{
 	case EPlayerStance::EPS_Standing:
@@ -307,11 +293,6 @@ void APlayerCharacter::SwitchWeapon()
 	}
 
 	UpdateWeaponHUD();
-}
-
-void APlayerCharacter::EndWeaponSwitch()
-{
-	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 }
 
 void APlayerCharacter::StartAttackTimer()
@@ -383,6 +364,28 @@ void APlayerCharacter::PlayReloadAnim()
 	default:
 		break;
 	}
+}
+
+void APlayerCharacter::StartWeaponSwitch()
+{
+	if (ActiveWeapon == EquippedWeapon1)
+	{
+		ActiveWeapon = EquippedWeapon2;
+		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
+
+	}
+	else
+	{
+		ActiveWeapon = EquippedWeapon1;
+		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
+	}
+}
+
+void APlayerCharacter::EndWeaponSwitch()
+{
+	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 }
 
 void APlayerCharacter::StartReloadActiveWeapon()
