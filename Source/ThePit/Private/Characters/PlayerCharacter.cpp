@@ -58,6 +58,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	CalculateSpreadMultiplier();
+	if (ActiveWeapon->GetAmmoCount() <= 0) ReloadWeapon();
 }
 
 // Called to bind functionality to input
@@ -76,7 +77,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::ToggleADS);
 		EnhancedInputComponent->BindAction(CycleFireModeAction, ETriggerEvent::Started, this, &APlayerCharacter::CycleFireMode);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
-		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::PlayReloadAnim);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::ReloadWeapon);
 	}
 }
 
@@ -280,10 +281,14 @@ void APlayerCharacter::SwitchWeapon()
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
 
-	RunCombatMontage->BlendIn = 0.f;
-	CrouchCombatMontage->BlendIn = 0.f;
+	CombatMontage->BlendIn = 0.f;
 
-	switch (PlayerStance)
+	/*RunCombatMontage->BlendIn = 0.f;
+	CrouchCombatMontage->BlendIn = 0.f;*/
+
+	PlayMontageSection(CombatMontage, FName("Equip"));
+
+	/*switch (PlayerStance)
 	{
 	case EPlayerStance::EPS_Standing:
 		PlayMontageSection(RunCombatMontage, FName("Equip"));
@@ -293,7 +298,7 @@ void APlayerCharacter::SwitchWeapon()
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	UpdateWeaponHUD();
 }
@@ -351,12 +356,15 @@ void APlayerCharacter::EquipWeapon()
 	UpdateWeaponHUD();
 }
 
-void APlayerCharacter::PlayReloadAnim()
+void APlayerCharacter::ReloadWeapon()
 {
 	if (ActiveWeapon->GetAmmoCount() >= ActiveWeapon->GetMagazineSize() || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
 	ClearAttackTimer();
 	PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
-	switch (PlayerStance)
+	PlayMontageSection(CombatMontage, FName("Reload"));
+
+
+	/*switch (PlayerStance)
 	{
 	case EPlayerStance::EPS_Standing:
 		PlayMontageSection(RunCombatMontage, FName("Reload"));
@@ -366,7 +374,7 @@ void APlayerCharacter::PlayReloadAnim()
 		break;
 	default:
 		break;
-	}
+	}*/
 }
 
 void APlayerCharacter::StartWeaponSwitch()
@@ -388,6 +396,7 @@ void APlayerCharacter::StartWeaponSwitch()
 
 void APlayerCharacter::EndWeaponSwitch()
 {
+	CombatMontage->BlendIn = 0.25f;
 	RunCombatMontage->BlendIn = 0.25f;
 	CrouchCombatMontage->BlendIn = 0.25f;
 

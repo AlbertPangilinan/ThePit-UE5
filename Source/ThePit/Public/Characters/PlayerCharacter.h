@@ -71,7 +71,7 @@ protected:
 	// Combat
 	void CalculateSpreadMultiplier();
 	void EquipWeapon();
-	void PlayReloadAnim();
+	void ReloadWeapon();
 
 	UFUNCTION(BlueprintCallable)
 	void StartWeaponSwitch();
@@ -171,6 +171,9 @@ private:
 
 
 	// Animation
+	UPROPERTY(EditDefaultsOnly, Category = Animation)
+	UAnimMontage* CombatMontage;
+
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
 	UAnimMontage* RunCombatMontage;
 
