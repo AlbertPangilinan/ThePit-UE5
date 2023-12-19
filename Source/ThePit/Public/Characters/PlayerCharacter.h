@@ -174,12 +174,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
 	UAnimMontage* CombatMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Animation)
-	UAnimMontage* RunCombatMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = Animation)
-	UAnimMontage* CrouchCombatMontage;
-
 
 	// Combat
 	FTimerHandle AttackTimer;

@@ -204,18 +204,6 @@ void APlayerCharacter::Attack()
 	default:
 		break;
 	}
-
-	/*switch (PlayerStance)
-	{
-	case EPlayerStance::EPS_Standing:
-		PlayMontageSection(RunCombatMontage, FName("Fire"));
-		break;
-	case EPlayerStance::EPS_Crouching:
-		PlayMontageSection(CrouchCombatMontage, FName("Fire"));
-		break;
-	default:
-		break;
-	}*/
 }
 
 void APlayerCharacter::AttackFullAuto()
@@ -280,26 +268,8 @@ void APlayerCharacter::SwitchWeapon()
 	ClearAttackTimer();
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
-
 	CombatMontage->BlendIn = 0.f;
-
-	/*RunCombatMontage->BlendIn = 0.f;
-	CrouchCombatMontage->BlendIn = 0.f;*/
-
 	PlayMontageSection(CombatMontage, FName("Equip"));
-
-	/*switch (PlayerStance)
-	{
-	case EPlayerStance::EPS_Standing:
-		PlayMontageSection(RunCombatMontage, FName("Equip"));
-		break;
-	case EPlayerStance::EPS_Crouching:
-		PlayMontageSection(CrouchCombatMontage, FName("Equip"));
-		break;
-	default:
-		break;
-	}*/
-
 	UpdateWeaponHUD();
 }
 
@@ -362,19 +332,6 @@ void APlayerCharacter::ReloadWeapon()
 	ClearAttackTimer();
 	PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
 	PlayMontageSection(CombatMontage, FName("Reload"));
-
-
-	/*switch (PlayerStance)
-	{
-	case EPlayerStance::EPS_Standing:
-		PlayMontageSection(RunCombatMontage, FName("Reload"));
-		break;
-	case EPlayerStance::EPS_Crouching:
-		PlayMontageSection(CrouchCombatMontage, FName("Reload"));
-		break;
-	default:
-		break;
-	}*/
 }
 
 void APlayerCharacter::StartWeaponSwitch()
@@ -397,9 +354,6 @@ void APlayerCharacter::StartWeaponSwitch()
 void APlayerCharacter::EndWeaponSwitch()
 {
 	CombatMontage->BlendIn = 0.25f;
-	RunCombatMontage->BlendIn = 0.25f;
-	CrouchCombatMontage->BlendIn = 0.25f;
-
 	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 }
 
