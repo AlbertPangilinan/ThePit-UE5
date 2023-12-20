@@ -58,7 +58,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	CalculateSpreadMultiplier();
-	if (ActiveWeapon->GetAmmoCount() <= 0) ReloadWeapon();
+	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetAmmoCount() <= 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
 }
 
@@ -282,6 +282,7 @@ void APlayerCharacter::SwitchWeapon()
 	ClearAttackTimer();
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
+	SwitchWeaponSockets();
 	CombatMontage->BlendIn = 0.05f;
 	CombatMontage->BlendOut= 0.05f;
 	PlayMontageSection(CombatMontage, FName("Equip"));
@@ -295,10 +296,13 @@ void APlayerCharacter::StartAttackTimer()
 
 void APlayerCharacter::ClearAttackTimer()
 {
-	CombatMontage->BlendIn = 0.25f;
-	CombatMontage->BlendOut = 0.25f;
-	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
-	GetWorldTimerManager().ClearTimer(AttackTimer);
+	if (PlayerCombatState != EPlayerCombatState::EPCS_Reloading)
+	{
+		CombatMontage->BlendIn = 0.25f;
+		CombatMontage->BlendOut = 0.25f;
+		PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
+		GetWorldTimerManager().ClearTimer(AttackTimer);
+	}
 }
 
 void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
@@ -356,20 +360,6 @@ void APlayerCharacter::StartWeaponSwitch()
 {
 	CombatMontage->BlendIn = 0.25f;
 	CombatMontage->BlendOut = 0.25f;
-
-	if (ActiveWeapon == EquippedWeapon1)
-	{
-		ActiveWeapon = EquippedWeapon2;
-		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
-
-	}
-	else
-	{
-		ActiveWeapon = EquippedWeapon1;
-		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
-	}
 }
 
 void APlayerCharacter::EndWeaponSwitch()
@@ -412,5 +402,22 @@ void APlayerCharacter::UpdateWeaponHUD()
 				PlayerOverlay->SetFireMode(ActiveWeapon);
 			}
 		}
+	}
+}
+
+void APlayerCharacter::SwitchWeaponSockets()
+{
+	if (ActiveWeapon == EquippedWeapon1)
+	{
+		ActiveWeapon = EquippedWeapon2;
+		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
+
+	}
+	else
+	{
+		ActiveWeapon = EquippedWeapon1;
+		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
 	}
 }

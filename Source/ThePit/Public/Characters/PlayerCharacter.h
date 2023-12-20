@@ -166,6 +166,7 @@ protected:
 private:
 	// Functions
 	void UpdateWeaponHUD();
+	void SwitchWeaponSockets();
 
 	// Variables
 	// Camera
