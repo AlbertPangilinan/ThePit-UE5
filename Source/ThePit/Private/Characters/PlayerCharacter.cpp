@@ -215,6 +215,7 @@ void APlayerCharacter::AttackSemiAuto()
 {
 	if (ActiveWeapon->GetAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
 	ActiveWeapon->Fire();
+	PlayMontageSection(CombatMontage, FName("Fire"));
 	UpdateWeaponHUD();
 }
 
