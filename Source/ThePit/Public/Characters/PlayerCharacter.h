@@ -122,13 +122,13 @@ protected:
 
 
 	// Player State
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EPlayerAimState PlayerAimState = EPlayerAimState::EPAS_Hipfire;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EPlayerCombatState PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 
 

@@ -198,7 +198,9 @@ void APlayerCharacter::ChangeStance()
 
 void APlayerCharacter::Attack()
 {
-	if (ActiveWeapon == nullptr || PlayerCombatState == EPlayerCombatState::EPCS_SwitchingWeapons) return;
+	if (ActiveWeapon == nullptr || PlayerCombatState == EPlayerCombatState::EPCS_SwitchingWeapons || ActiveWeapon->GetAmmoCount() <= 0) return;
+	CombatMontage->BlendIn = 0.05f;
+	CombatMontage->BlendOut = 0.05f;
 	if (PlayerCombatState == EPlayerCombatState::EPCS_Reloading) StopAnimMontage();
 
 	PlayerCombatState = EPlayerCombatState::EPCS_Firing;
@@ -226,7 +228,7 @@ void APlayerCharacter::AttackSemiAuto()
 {
 	if (ActiveWeapon->GetAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
 	ActiveWeapon->Fire();
-	PlayMontageSection(CombatMontage, FName("Fire"));
+	//PlayMontageSection(CombatMontage, FName("Fire"));
 	UpdateWeaponHUD();
 }
 
@@ -280,7 +282,8 @@ void APlayerCharacter::SwitchWeapon()
 	ClearAttackTimer();
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
-	CombatMontage->BlendIn = 0.f;
+	CombatMontage->BlendIn = 0.05f;
+	CombatMontage->BlendOut= 0.05f;
 	PlayMontageSection(CombatMontage, FName("Equip"));
 	UpdateWeaponHUD();
 }
@@ -292,6 +295,9 @@ void APlayerCharacter::StartAttackTimer()
 
 void APlayerCharacter::ClearAttackTimer()
 {
+	CombatMontage->BlendIn = 0.25f;
+	CombatMontage->BlendOut = 0.25f;
+	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 	GetWorldTimerManager().ClearTimer(AttackTimer);
 }
 
@@ -348,6 +354,9 @@ void APlayerCharacter::ReloadWeapon()
 
 void APlayerCharacter::StartWeaponSwitch()
 {
+	CombatMontage->BlendIn = 0.25f;
+	CombatMontage->BlendOut = 0.25f;
+
 	if (ActiveWeapon == EquippedWeapon1)
 	{
 		ActiveWeapon = EquippedWeapon2;
@@ -365,7 +374,6 @@ void APlayerCharacter::StartWeaponSwitch()
 
 void APlayerCharacter::EndWeaponSwitch()
 {
-	CombatMontage->BlendIn = 0.25f;
 	PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 }
 
