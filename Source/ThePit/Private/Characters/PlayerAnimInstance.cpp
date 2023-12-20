@@ -31,7 +31,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	if (PlayerCharacterMovement)
 	{
 		PlayerMovementVector = PlayerCharacter->GetMovementVector();
-		PlayerAimVector = PlayerCharacter->GetAimVector();
+		PlayerAimZ = PlayerCharacter->GetAimZ();
 		GroundSpeed = PlayerCharacter->GetGroundSpeed();
 		IsFalling = PlayerCharacterMovement->IsFalling();
 		PlayerStance = PlayerCharacter->GetPlayerStance();

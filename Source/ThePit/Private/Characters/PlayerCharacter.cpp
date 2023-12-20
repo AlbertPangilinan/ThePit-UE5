@@ -59,6 +59,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	CalculateSpreadMultiplier();
 	if (ActiveWeapon->GetAmmoCount() <= 0) ReloadWeapon();
+	AimZ = GetCameraRotation().Z;
 }
 
 // Called to bind functionality to input
@@ -81,21 +82,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
-// Called when the game starts or when spawned
-void APlayerCharacter::BeginPlay()
+FVector APlayerCharacter::GetCameraLocation()
 {
-	Super::BeginPlay();
+	return ViewCamera->GetComponentLocation();
+}
 
-	EquipWeapon();
-	
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		// Setup Enhanced Input
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(PlayerContext, 0);
-		}		
-	}	
+FVector APlayerCharacter::GetCameraRotation()
+{
+	return ViewCamera->GetComponentRotation().GetNormalized().Vector();
 }
 
 AWeapon* APlayerCharacter::GetActiveWeapon()
@@ -107,6 +101,23 @@ AWeapon* APlayerCharacter::GetActiveWeapon()
 double APlayerCharacter::GetGroundSpeed()
 {
 	return UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity);
+}
+
+// Called when the game starts or when spawned
+void APlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	EquipWeapon();
+
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		// Setup Enhanced Input
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(PlayerContext, 0);
+		}
+	}
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
@@ -139,9 +150,9 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
 {
-	AimVector = Value.Get<FVector2D>();
-	AddControllerPitchInput(AimVector.Y);
-	AddControllerYawInput(AimVector.X);
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+	AddControllerPitchInput(LookAxisVector.Y);
+	AddControllerYawInput(LookAxisVector.X);
 }
 
 void APlayerCharacter::Jump()

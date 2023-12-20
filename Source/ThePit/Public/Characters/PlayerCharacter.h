@@ -40,6 +40,9 @@ public:
 	virtual void Tick(float DeltaTime) override; // Called every frame
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // Called to bind functionality to input
 
+	FVector GetCameraLocation();
+	FVector GetCameraRotation();
+
 	UFUNCTION(BlueprintCallable)
 	AWeapon* GetActiveWeapon();
 
@@ -134,7 +137,7 @@ protected:
 	FVector2D MovementVector;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FVector2D AimVector;
+	float AimZ;
 
 
 	// Combat
@@ -182,11 +185,10 @@ private:
 	FTimerHandle AttackTimer;
 
 public:
-	FORCEINLINE UCameraComponent* GetCamera() const { return ViewCamera; }
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
 	FORCEINLINE EPlayerAimState GetPlayerAimState() const { return PlayerAimState; }
 	FORCEINLINE EPlayerCombatState GetPlayerCombatState() const { return PlayerCombatState; }
 	FORCEINLINE float GetSpreadMultiplier() const { return SpreadMultiplier; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
-	FORCEINLINE FVector2D GetAimVector() const { return AimVector; }
+	FORCEINLINE float GetAimZ() const { return AimZ; }
 };

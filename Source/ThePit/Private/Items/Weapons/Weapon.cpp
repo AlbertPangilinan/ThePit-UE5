@@ -81,11 +81,8 @@ FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArr
 {
 	FHitResult LineOfSightResult;
 
-	UCameraComponent* ViewCamera = PlayerCharacter->GetCamera();
-	const FVector CameraLocation = ViewCamera->GetComponentLocation();
-	const FVector CameraRotation = ViewCamera->GetComponentRotation().GetNormalized().Vector();
-	const FVector LineOfSightStart = CameraLocation + CameraRotation;
-	const FVector LineOfSightEnd = LineOfSightStart + CameraRotation * 5000.f;
+	const FVector LineOfSightStart = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation();
+	const FVector LineOfSightEnd = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation() * 5000.f;
 
 	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
 	return LineOfSightResult;
@@ -98,7 +95,7 @@ FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<T
 	FVector HitscanStart = HitscanOrigin->GetComponentLocation();
 	FVector HitscanEnd = CalculateTrajectory(PlayerCharacter, LineOfSightResult.ImpactPoint - HitscanStart);
 
-	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitscanResult, true, FColor::Red);
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
 
 	return HitscanResult;
 }

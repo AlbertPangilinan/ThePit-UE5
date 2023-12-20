@@ -42,7 +42,7 @@ public:
 	FVector2D PlayerMovementVector;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
-	FVector2D PlayerAimVector;
+	float PlayerAimZ;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFalling;
