@@ -133,6 +133,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D MovementVector;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FVector2D AimVector;
+
 
 	// Combat
 	UPROPERTY(VisibleAnywhere, Category = Combat)
@@ -185,4 +188,5 @@ public:
 	FORCEINLINE EPlayerCombatState GetPlayerCombatState() const { return PlayerCombatState; }
 	FORCEINLINE float GetSpreadMultiplier() const { return SpreadMultiplier; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
+	FORCEINLINE FVector2D GetAimVector() const { return AimVector; }
 };

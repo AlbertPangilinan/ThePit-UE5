@@ -139,9 +139,9 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
 {
-	const FVector2D LookAxisVector = Value.Get<FVector2D>();
-	AddControllerPitchInput(LookAxisVector.Y);
-	AddControllerYawInput(LookAxisVector.X);
+	AimVector = Value.Get<FVector2D>();
+	AddControllerPitchInput(AimVector.Y);
+	AddControllerYawInput(AimVector.X);
 }
 
 void APlayerCharacter::Jump()

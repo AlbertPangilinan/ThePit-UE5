@@ -42,6 +42,9 @@ public:
 	FVector2D PlayerMovementVector;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	FVector2D PlayerAimVector;
+
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFalling;
 
 	UPROPERTY(BlueprintReadOnly, Category = State)
