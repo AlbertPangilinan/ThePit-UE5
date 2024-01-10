@@ -11,8 +11,7 @@ AEnvActor::AEnvActor()
 
 	// Mesh Setup
 	ActorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ActorMesh"));
-	ActorMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	ActorMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	ActorMesh->bUseDefaultCollision = true;
 	SetRootComponent(ActorMesh);
 }
 
