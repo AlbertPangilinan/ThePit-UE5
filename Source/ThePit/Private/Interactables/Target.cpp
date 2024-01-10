@@ -16,8 +16,6 @@ ATarget::ATarget()
 	// Mesh Setup
 	TargetMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TargetMesh"));
 	TargetMesh->bUseDefaultCollision = true;
-	//TargetMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	//TargetMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	SetRootComponent(TargetMesh);
 }
 
