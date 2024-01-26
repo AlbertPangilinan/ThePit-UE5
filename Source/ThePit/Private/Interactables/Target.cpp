@@ -44,7 +44,6 @@ void ATarget::BeginPlay()
 
 void ATarget::SelectNewMovementTarget()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Select New"));
 	TArray<AActor*> ValidTargets;
 	for (AActor* Target : MovementTargets)
 	{
