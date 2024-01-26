@@ -3,6 +3,9 @@
 
 #include "Interactables/Target.h"
 
+// Kismet
+#include "Kismet/KismetMathLibrary.h"
+
 // Niagara
 #include "NiagaraFunctionLibrary.h"
 
@@ -24,6 +27,12 @@ void ATarget::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const int32 NumTargets = MovementTargets.Num();
+	if (!IsHit && MovementTarget && NumTargets > 0)
+	{
+		if (GetActorLocation() == MovementTarget->GetActorLocation()) SelectNewMovementTarget();
+		MoveToTarget(DeltaTime);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -35,26 +44,24 @@ void ATarget::BeginPlay()
 
 void ATarget::SelectNewMovementTarget()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Select New"));
 	TArray<AActor*> ValidTargets;
 	for (AActor* Target : MovementTargets)
 	{
 		if (Target != MovementTarget) ValidTargets.AddUnique(Target);
 	}
 
-	const int32 NumTargets = ValidTargets.Num();
-	if (NumTargets > 0)
+	const int32 NumValidTargets = ValidTargets.Num();
+	if (NumValidTargets > 0)
 	{
-		const int32 NewTarget = FMath::FRandRange(0, NumTargets - 1);
+		const int32 NewTarget = FMath::FRandRange(0, NumValidTargets - 1);
 		MovementTarget = ValidTargets[NewTarget];
 	}
 }
 
-void ATarget::MoveToTarget()
+void ATarget::MoveToTarget(float DeltaTime)
 {
-	if (MovementTarget)
-	{
-		
-	}
+	SetActorLocation(UKismetMathLibrary::VInterpTo_Constant(GetActorLocation(), MovementTarget->GetActorLocation(), DeltaTime, 100.f));
 }
 
 void ATarget::SpawnBulletImpactSystem(FVector ImpactPoint)

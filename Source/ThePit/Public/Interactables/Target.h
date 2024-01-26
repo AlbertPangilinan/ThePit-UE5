@@ -45,7 +45,7 @@ private:
 	// Functions
 	// Navigation
 	void SelectNewMovementTarget();
-	void MoveToTarget();
+	void MoveToTarget(float DeltaTime);
 
 
 	// Variables
