@@ -41,7 +41,21 @@ protected:
 	UNiagaraSystem* BulletImpactEffect;
 
 
-private:	
+private:
+	// Functions
+	// Navigation
+	void SelectNewMovementTarget();
+	void MoveToTarget();
+
+
 	// Variables
+	// Hit Detection
 	bool IsHit = false;
+
+	// Movement
+	UPROPERTY(EditInstanceOnly, Category = "Target Movement")
+	AActor* MovementTarget;
+
+	UPROPERTY(EditInstanceOnly, Category = "Target Movement")
+	TArray<AActor*> MovementTargets;
 };

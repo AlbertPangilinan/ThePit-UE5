@@ -33,6 +33,30 @@ void ATarget::BeginPlay()
 
 }
 
+void ATarget::SelectNewMovementTarget()
+{
+	TArray<AActor*> ValidTargets;
+	for (AActor* Target : MovementTargets)
+	{
+		if (Target != MovementTarget) ValidTargets.AddUnique(Target);
+	}
+
+	const int32 NumTargets = ValidTargets.Num();
+	if (NumTargets > 0)
+	{
+		const int32 NewTarget = FMath::FRandRange(0, NumTargets - 1);
+		MovementTarget = ValidTargets[NewTarget];
+	}
+}
+
+void ATarget::MoveToTarget()
+{
+	if (MovementTarget)
+	{
+		
+	}
+}
+
 void ATarget::SpawnBulletImpactSystem(FVector ImpactPoint)
 {
 	if (BulletImpactEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BulletImpactEffect, ImpactPoint, GetActorRotation());
