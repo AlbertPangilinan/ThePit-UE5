@@ -46,8 +46,8 @@ APlayerCharacter::APlayerCharacter()
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
-	CameraBoom->TargetArmLength = 250.f;
 	CameraBoom->SocketOffset = FVector(0.f, 50.f, 75.f);
+	CameraBoom->TargetArmLength = 250.f;
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
 	ViewCamera->SetupAttachment(CameraBoom);
@@ -57,9 +57,19 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	CalculateSpreadMultiplier();
 	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetAmmoCount() <= 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
+
+	if (CameraBoom->SocketOffset.Z != TargetCameraPosition)
+	{
+		CameraBoom->SocketOffset.Z = UKismetMathLibrary::FInterpTo_Constant(CameraBoom->SocketOffset.Z, TargetCameraPosition, DeltaTime, 500.f);
+	}
+	if (CameraBoom->TargetArmLength != TargetCameraZoom)
+	{
+		CameraBoom->TargetArmLength = UKismetMathLibrary::FInterpTo_Constant(CameraBoom->TargetArmLength, TargetCameraZoom, DeltaTime, 750.f);
+	}
 }
 
 // Called to bind functionality to input
@@ -107,6 +117,9 @@ double APlayerCharacter::GetGroundSpeed()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	TargetCameraPosition = CameraBoom->SocketOffset.Z;
+	TargetCameraZoom = CameraBoom->TargetArmLength;
 
 	EquipWeapon();
 
@@ -163,13 +176,11 @@ void APlayerCharacter::Jump()
 
 void APlayerCharacter::ChangeStance()
 {
-	FVector TargetCameraPosition;
-
 	switch (PlayerStance)
 	{
 		case EPlayerStance::EPS_Crouching:
 			PlayerStance = EPlayerStance::EPS_Standing;
-			TargetCameraPosition = FVector(0.f, 50.f, 75.f);
+			TargetCameraPosition = 75.f;
 			/*if (UCapsuleComponent* PlayerCapsule = Cast<UCapsuleComponent>(GetRootComponent()))
 			{
 				PlayerCapsule->SetCapsuleHalfHeight(90.f);
@@ -178,7 +189,7 @@ void APlayerCharacter::ChangeStance()
 			break;
 		case EPlayerStance::EPS_Standing:
 			PlayerStance = EPlayerStance::EPS_Crouching;
-			TargetCameraPosition = FVector(0.f, 50.f, 25.f);
+			TargetCameraPosition = 25.f;
 			/*if (UCapsuleComponent* PlayerCapsule = Cast<UCapsuleComponent>(GetRootComponent()))
 			{
 				PlayerCapsule->SetCapsuleHalfHeight(60.f);
@@ -187,12 +198,6 @@ void APlayerCharacter::ChangeStance()
 			break;
 		default:
 			break;
-	}
-
-	while (!FMath::IsNearlyEqual(CameraBoom->SocketOffset.Z, TargetCameraPosition.Z))
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("%d"), CameraBoom->SocketOffset.Z);
-		CameraBoom->SocketOffset = FMath::VInterpConstantTo(CameraBoom->SocketOffset, TargetCameraPosition, UGameplayStatics::GetWorldDeltaSeconds(this), 1.f);
 	}
 }
 
@@ -234,8 +239,6 @@ void APlayerCharacter::AttackSemiAuto()
 
 void APlayerCharacter::ToggleADS()
 {
-	float TargetCameraZoom;
-
 	switch (PlayerAimState)
 	{
 		case EPlayerAimState::EPAS_Hipfire:
@@ -248,11 +251,6 @@ void APlayerCharacter::ToggleADS()
 			break;
 		default:
 			break;
-	}
-
-	while (!FMath::IsNearlyEqual(CameraBoom->TargetArmLength, TargetCameraZoom))
-	{
-		CameraBoom->TargetArmLength = FMath::FInterpConstantTo(CameraBoom->TargetArmLength, TargetCameraZoom, UGameplayStatics::GetWorldDeltaSeconds(this), 1.f);
 	}
 }
 

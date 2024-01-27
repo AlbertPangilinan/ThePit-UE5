@@ -176,6 +176,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
+	float TargetCameraPosition;
+	float TargetCameraZoom;
+
 
 	// Animation
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
