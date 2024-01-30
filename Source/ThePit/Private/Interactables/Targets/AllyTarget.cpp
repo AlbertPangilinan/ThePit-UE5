@@ -3,3 +3,8 @@
 
 #include "Interactables/Targets/AllyTarget.h"
 
+void AAllyTarget::KnockOver()
+{
+	Super::KnockOver();
+
+}

@@ -24,7 +24,7 @@ public:
 	// Functions
 	// Interact
 	void SpawnBulletImpactSystem(FVector ImpactPoint);
-	void KnockOver();
+	virtual void KnockOver();
 
 
 protected:

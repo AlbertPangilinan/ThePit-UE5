@@ -3,3 +3,8 @@
 
 #include "Interactables/Targets/EnemyTarget.h"
 
+void AEnemyTarget::KnockOver()
+{
+	Super::KnockOver();
+
+}

@@ -13,5 +13,10 @@ UCLASS()
 class THEPIT_API AAllyTarget : public ATarget
 {
 	GENERATED_BODY()
-	
+
+public:
+	// Functions
+	virtual void KnockOver() override;
+
+
 };

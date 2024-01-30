@@ -14,4 +14,9 @@ class THEPIT_API AEnemyTarget : public ATarget
 {
 	GENERATED_BODY()
 	
+public:
+	// Functions
+	virtual void KnockOver() override;
+
+
 };
