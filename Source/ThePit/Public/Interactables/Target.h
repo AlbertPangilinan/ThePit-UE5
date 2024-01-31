@@ -23,7 +23,6 @@ public:
 
 	// Functions
 	// Interact
-	void Activate();
 	void SpawnBulletImpactSystem(FVector ImpactPoint);
 	virtual void KnockOver();
 
@@ -50,8 +49,7 @@ private:
 
 
 	// Variables
-	// Target State
-	bool IsActive = false;
+	// Hit Detection
 	bool IsHit = false;
 
 	// Movement

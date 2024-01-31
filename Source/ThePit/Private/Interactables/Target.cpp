@@ -19,7 +19,6 @@ ATarget::ATarget()
 	// Mesh Setup
 	TargetMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TargetMesh"));
 	TargetMesh->bUseDefaultCollision = true;
-	TargetMesh->SetSimulatePhysics(true);
 	SetRootComponent(TargetMesh);
 }
 
@@ -73,11 +72,7 @@ void ATarget::KnockOver()
 {
 	if (!IsHit)
 	{
-		FVector BulletImpact = FVector(0.f, 100000.f, 0.f);
-		FTransform ActorTransform = GetActorTransform();
-		FVector HitscanForce = UKismetMathLibrary::TransformDirection(ActorTransform, BulletImpact);
-		TargetMesh->AddImpulse(HitscanForce);
-		//SetActorRotation(GetActorRotation() + FRotator(0.f, 0.f, 90.f));
-		//IsHit = true;
+		SetActorRotation(GetActorRotation() + FRotator(0.f, 0.f, 90.f));
+		IsHit = true;
 	}
 }
