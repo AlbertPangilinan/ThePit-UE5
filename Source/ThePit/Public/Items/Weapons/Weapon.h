@@ -75,7 +75,7 @@ private:
 	float Spread = 2.5f; // Deviation from crosshair centre in degrees
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	int32 AmmoCount = 30;
+	int32 CurrentAmmoCount = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	int32 MagazineSize = 30;
@@ -93,6 +93,6 @@ public:
 	FORCEINLINE EWeaponFireMode GetFireMode() const { return FireMode; }
 	FORCEINLINE void SetFireMode(EWeaponFireMode NewFireMode) { FireMode = NewFireMode; }
 	FORCEINLINE float GetSpread() const { return Spread; }
-	FORCEINLINE int32 GetAmmoCount() const { return AmmoCount; }
+	FORCEINLINE int32 GetCurrentAmmoCount() const { return CurrentAmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
 };

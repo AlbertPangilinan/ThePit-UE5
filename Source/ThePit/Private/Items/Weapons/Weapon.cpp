@@ -74,7 +74,7 @@ void AWeapon::Fire()
 
 void AWeapon::Reload()
 {
-	AmmoCount = MagazineSize;
+	CurrentAmmoCount = MagazineSize;
 }
 
 FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
@@ -131,5 +131,5 @@ void AWeapon::PlayFiringFX()
 {
 	if (FiringSound) UGameplayStatics::PlaySoundAtLocation(this, FiringSound, GetActorLocation());
 	if (MuzzleFlashEffect) UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, MuzzleFlashEffect, MuzzleFlashOrigin->GetComponentLocation(), MuzzleFlashOrigin->GetComponentRotation());
-	AmmoCount -= 1;
+	CurrentAmmoCount -= 1;
 }

@@ -51,6 +51,6 @@ public:
 	EPlayerStance PlayerStance;
 
 	UPROPERTY(BlueprintReadOnly, Category = State)
-	int32 ActiveWeaponAmmoCount;
+	int32 ActiveWeaponCurrentAmmoCount;
 
 };

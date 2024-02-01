@@ -30,7 +30,7 @@ class THEPIT_API UPlayerOverlay : public UUserWidget
 public:
 	// Functions
 	void SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon);
-	void SetAmmoCount(AWeapon* CurrentWeapon);
+	void SetCurrentAmmoCount(AWeapon* CurrentWeapon);
 	void SetWeaponName(AWeapon* CurrentWeapon);
 	void SetFireMode(AWeapon* CurrentWeapon);
 
@@ -49,7 +49,7 @@ public:
 	UImage* CrosshairRight;
 
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* AmmoCount;
+	UTextBlock* CurrentAmmoCount;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* WeaponName;

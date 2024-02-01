@@ -36,6 +36,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		IsFalling = PlayerCharacterMovement->IsFalling();
 		PlayerStance = PlayerCharacter->GetPlayerStance();
 		AWeapon* ActiveWeapon = PlayerCharacter->GetActiveWeapon();
-		if (ActiveWeapon) ActiveWeaponAmmoCount = ActiveWeapon->GetAmmoCount();
+		if (ActiveWeapon) ActiveWeaponCurrentAmmoCount = ActiveWeapon->GetCurrentAmmoCount();
 	}
 }

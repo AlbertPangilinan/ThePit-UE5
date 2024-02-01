@@ -59,7 +59,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CalculateSpreadMultiplier();
-	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetAmmoCount() <= 0) ReloadWeapon();
+	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetCurrentAmmoCount() <= 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
 
 	if (CameraBoom->SocketOffset.Z != TargetCameraPosition)
@@ -203,7 +203,7 @@ void APlayerCharacter::ChangeStance()
 
 void APlayerCharacter::Attack()
 {
-	if (ActiveWeapon == nullptr || PlayerCombatState == EPlayerCombatState::EPCS_SwitchingWeapons || ActiveWeapon->GetAmmoCount() <= 0) return;
+	if (ActiveWeapon == nullptr || PlayerCombatState == EPlayerCombatState::EPCS_SwitchingWeapons || ActiveWeapon->GetCurrentAmmoCount() <= 0) return;
 	CombatMontage->BlendIn = 0.05f;
 	CombatMontage->BlendOut = 0.05f;
 	if (PlayerCombatState == EPlayerCombatState::EPCS_Reloading) StopAnimMontage();
@@ -231,7 +231,7 @@ void APlayerCharacter::AttackFullAuto()
 
 void APlayerCharacter::AttackSemiAuto()
 {
-	if (ActiveWeapon->GetAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	if (ActiveWeapon->GetCurrentAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
 	ActiveWeapon->Fire();
 	//PlayMontageSection(CombatMontage, FName("Fire"));
 	UpdateWeaponHUD();
@@ -348,7 +348,7 @@ void APlayerCharacter::EquipWeapon()
 
 void APlayerCharacter::ReloadWeapon()
 {
-	if (ActiveWeapon->GetAmmoCount() >= ActiveWeapon->GetMagazineSize() || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	if (ActiveWeapon->GetCurrentAmmoCount() >= ActiveWeapon->GetMagazineSize() || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
 	ClearAttackTimer();
 	PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
 	PlayMontageSection(CombatMontage, FName("Reload"));
@@ -368,7 +368,7 @@ void APlayerCharacter::EndWeaponSwitch()
 void APlayerCharacter::StartReloadActiveWeapon()
 {
 	if (ActiveWeapon == nullptr) return;
-	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
+	if (ActiveWeapon->GetCurrentAmmoCount() < ActiveWeapon->GetMagazineSize())
 	{
 		ClearAttackTimer();
 		PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
@@ -378,7 +378,7 @@ void APlayerCharacter::StartReloadActiveWeapon()
 void APlayerCharacter::EndReloadActiveWeapon()
 {
 	if (ActiveWeapon == nullptr) return;
-	if (ActiveWeapon->GetAmmoCount() < ActiveWeapon->GetMagazineSize())
+	if (ActiveWeapon->GetCurrentAmmoCount() < ActiveWeapon->GetMagazineSize())
 	{
 		ActiveWeapon->Reload();
 		UpdateWeaponHUD();
@@ -395,7 +395,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
 			{
 				PlayerOverlay->SetCrosshairSpread(SpreadMultiplier, ActiveWeapon);
-				PlayerOverlay->SetAmmoCount(ActiveWeapon);
+				PlayerOverlay->SetCurrentAmmoCount(ActiveWeapon);
 				PlayerOverlay->SetWeaponName(ActiveWeapon);
 				PlayerOverlay->SetFireMode(ActiveWeapon);
 			}

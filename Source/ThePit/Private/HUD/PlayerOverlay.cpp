@@ -28,9 +28,9 @@ void UPlayerOverlay::SetCrosshairSpread(float SpreadMultiplier, AWeapon* Current
 	CrosshairRightSlot->SetPosition(FVector2D(CrosshairSpread, 0.f));
 }
 
-void UPlayerOverlay::SetAmmoCount(AWeapon* CurrentWeapon)
+void UPlayerOverlay::SetCurrentAmmoCount(AWeapon* CurrentWeapon)
 {
-	if (CurrentWeapon) AmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), CurrentWeapon->GetAmmoCount(), CurrentWeapon->GetMagazineSize())));
+	if (CurrentWeapon) CurrentAmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), CurrentWeapon->GetCurrentAmmoCount(), CurrentWeapon->GetMagazineSize())));
 }
 
 void UPlayerOverlay::SetWeaponName(AWeapon* CurrentWeapon)
