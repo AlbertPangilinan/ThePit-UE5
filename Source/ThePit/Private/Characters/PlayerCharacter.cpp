@@ -109,6 +109,17 @@ AWeapon* APlayerCharacter::GetActiveWeapon()
 	return nullptr;
 }
 
+FHitResult APlayerCharacter::LineOfSightLineTrace(TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
+{
+	FHitResult LineOfSightResult;
+
+	const FVector LineOfSightStart = GetCameraLocation() + GetCameraRotation();
+	const FVector LineOfSightEnd = GetCameraLocation() + GetCameraRotation() * MaxRange;
+
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
+	return LineOfSightResult;
+}
+
 double APlayerCharacter::GetGroundSpeed()
 {
 	return UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity);

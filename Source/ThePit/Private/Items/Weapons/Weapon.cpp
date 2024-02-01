@@ -61,7 +61,7 @@ void AWeapon::Fire()
 		TArray<AActor*> ActorsToIgnore;
 		ActorsToIgnore.Add(GetOwner());
 
-		FHitResult LineOfSightResult = LineOfSightLineTrace(PlayerCharacter, ObjectTypes, ActorsToIgnore);
+		FHitResult LineOfSightResult = PlayerCharacter->LineOfSightLineTrace(ObjectTypes, ActorsToIgnore);
 
 		if (LineOfSightResult.IsValidBlockingHit())
 		{
@@ -80,16 +80,16 @@ void AWeapon::Reload()
 	ReserveAmmoCount -= AmmoToReload;
 }
 
-FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
-{
-	FHitResult LineOfSightResult;
-
-	const FVector LineOfSightStart = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation();
-	const FVector LineOfSightEnd = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation() * 5000.f;
-
-	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
-	return LineOfSightResult;
-}
+//FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
+//{
+//	FHitResult LineOfSightResult;
+//
+//	const FVector LineOfSightStart = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation();
+//	const FVector LineOfSightEnd = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation() * 5000.f;
+//
+//	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
+//	return LineOfSightResult;
+//}
 
 FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult)
 {

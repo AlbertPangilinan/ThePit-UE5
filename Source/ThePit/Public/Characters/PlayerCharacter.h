@@ -46,6 +46,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AWeapon* GetActiveWeapon();
 
+	FHitResult LineOfSightLineTrace(TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore);
+
 	double GetGroundSpeed();
 
 protected:
@@ -157,6 +159,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Combat)
 	float SpreadMultiplier = 1.f;
 
+	UPROPERTY(VisibleAnywhere, Category = Combat)
+	float MaxRange = 10000.f;
 
 	// TEMP
 	UPROPERTY(EditAnywhere, Category = Combat)
@@ -169,8 +173,12 @@ protected:
 
 private:
 	// Functions
+	// Combat
 	void UpdateWeaponHUD();
 	void SwitchWeaponSockets();
+
+	// Interact
+	void GetLineOfSightActor();
 
 	// Variables
 	// Camera
@@ -196,6 +204,10 @@ private:
 	// Interact
 	UPROPERTY(VisibleInstanceOnly)
 	AActor* OverlappingActor;
+
+	UPROPERTY(VisibleInstanceOnly)
+	AActor* LineOfSightActor;
+
 
 public:
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
