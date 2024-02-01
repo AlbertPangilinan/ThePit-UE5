@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Item.generated.h"
+#include "AmmoBox.generated.h"
 
 
 class USphereComponent;
 
 
 UCLASS()
-class THEPIT_API AItem : public AActor
+class THEPIT_API AAmmoBox : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AItem(); // Sets default values for this actor's properties
+	AAmmoBox(); // Sets default values for this actor's properties
 	virtual void Tick(float DeltaTime) override; // Called every frame
 
 
@@ -26,13 +26,15 @@ protected:
 	// Variables
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* ItemMesh;
+	UStaticMeshComponent* BoxMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* InteractRadius;
 
 
-private:
-
+private:	
+	// Functions
+	// Interact
+	void RefillAmmo();
 
 };
