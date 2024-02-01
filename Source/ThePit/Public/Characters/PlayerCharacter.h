@@ -66,6 +66,7 @@ protected:
 	void SwitchWeapon();
 	void StartAttackTimer();
 	void ClearAttackTimer();
+	void Interact();
 
 	// Animation
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
@@ -119,6 +120,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ReloadAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* InteractAction;
 
 
 	// Player State

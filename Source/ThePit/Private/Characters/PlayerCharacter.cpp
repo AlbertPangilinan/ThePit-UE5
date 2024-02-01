@@ -89,6 +89,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(CycleFireModeAction, ETriggerEvent::Started, this, &APlayerCharacter::CycleFireMode);
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
 		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::ReloadWeapon);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 	}
 }
 
@@ -301,6 +302,11 @@ void APlayerCharacter::ClearAttackTimer()
 		PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 		GetWorldTimerManager().ClearTimer(AttackTimer);
 	}
+}
+
+void APlayerCharacter::Interact()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Interact Key Pressed"));
 }
 
 void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
