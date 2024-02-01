@@ -205,4 +205,5 @@ public:
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 	FORCEINLINE float GetAimZ() const { return AimZ; }
 	FORCEINLINE void SetOverlappingActor(AActor* Actor) { OverlappingActor = Actor; }
+	FORCEINLINE void ClearOverlappingActor() { OverlappingActor = nullptr; }
 };
