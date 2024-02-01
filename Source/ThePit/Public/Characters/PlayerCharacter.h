@@ -202,10 +202,10 @@ private:
 
 
 	// Interact
-	UPROPERTY(VisibleInstanceOnly)
+	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AActor* OverlappingActor;
 
-	UPROPERTY(VisibleInstanceOnly)
+	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AActor* LineOfSightActor;
 
 

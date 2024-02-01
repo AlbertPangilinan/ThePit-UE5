@@ -17,9 +17,8 @@ AAmmoBox::AAmmoBox()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Mesh Setup
-	BoxMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
-	BoxMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	BoxMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BoxMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BoxMesh"));
+	BoxMesh->bUseDefaultCollision = true;
 	SetRootComponent(BoxMesh);
 
 	// Interact Radius Setup

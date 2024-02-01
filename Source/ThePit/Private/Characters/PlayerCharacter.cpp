@@ -58,6 +58,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	GetLineOfSightActor();
 	CalculateSpreadMultiplier();
 	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetCurrentAmmoCount() <= 0 && ActiveWeapon->GetReserveAmmoCount() > 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
@@ -116,7 +117,7 @@ FHitResult APlayerCharacter::LineOfSightLineTrace(TArray<TEnumAsByte<EObjectType
 	const FVector LineOfSightStart = GetCameraLocation() + GetCameraRotation();
 	const FVector LineOfSightEnd = GetCameraLocation() + GetCameraRotation() * MaxRange;
 
-	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::None, LineOfSightResult, true, FColor::Blue);
 	return LineOfSightResult;
 }
 
@@ -435,4 +436,16 @@ void APlayerCharacter::SwitchWeaponSockets()
 		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
 	}
+}
+
+void APlayerCharacter::GetLineOfSightActor()
+{
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
+
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(GetOwner());
+
+	FHitResult LineOfSightResult = LineOfSightLineTrace(ObjectTypes, ActorsToIgnore);
+	if (LineOfSightResult.IsValidBlockingHit()) LineOfSightActor = LineOfSightResult.GetActor();
 }

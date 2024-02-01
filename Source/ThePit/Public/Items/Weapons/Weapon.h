@@ -38,7 +38,6 @@ protected:
 private:
 	// Functions
 	// Combat
-	//FHitResult LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore);
 	FHitResult HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult);
 	float CalculateAxisDeviation(APlayerCharacter* PlayerCharacter);
 	FVector CalculateTrajectory(APlayerCharacter* PlayerCharacter, FVector HitscanPath);

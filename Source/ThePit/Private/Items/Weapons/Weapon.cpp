@@ -80,17 +80,6 @@ void AWeapon::Reload()
 	ReserveAmmoCount -= AmmoToReload;
 }
 
-//FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
-//{
-//	FHitResult LineOfSightResult;
-//
-//	const FVector LineOfSightStart = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation();
-//	const FVector LineOfSightEnd = PlayerCharacter->GetCameraLocation() + PlayerCharacter->GetCameraRotation() * 5000.f;
-//
-//	UKismetSystemLibrary::LineTraceSingleForObjects(this, LineOfSightStart, LineOfSightEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, LineOfSightResult, true, FColor::Blue);
-//	return LineOfSightResult;
-//}
-
 FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult)
 {
 	FHitResult HitscanResult;
