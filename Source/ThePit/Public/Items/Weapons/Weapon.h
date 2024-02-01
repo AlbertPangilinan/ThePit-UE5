@@ -78,6 +78,9 @@ private:
 	int32 CurrentAmmoCount = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	int32 ReserveAmmoCount = 60;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	int32 MagazineSize = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
@@ -94,5 +97,6 @@ public:
 	FORCEINLINE void SetFireMode(EWeaponFireMode NewFireMode) { FireMode = NewFireMode; }
 	FORCEINLINE float GetSpread() const { return Spread; }
 	FORCEINLINE int32 GetCurrentAmmoCount() const { return CurrentAmmoCount; }
+	FORCEINLINE int32 GetReserveAmmoCount() const { return ReserveAmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
 };

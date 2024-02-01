@@ -59,7 +59,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CalculateSpreadMultiplier();
-	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetCurrentAmmoCount() <= 0) ReloadWeapon();
+	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetCurrentAmmoCount() <= 0 && ActiveWeapon->GetReserveAmmoCount() > 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
 
 	if (CameraBoom->SocketOffset.Z != TargetCameraPosition)
@@ -348,7 +348,7 @@ void APlayerCharacter::EquipWeapon()
 
 void APlayerCharacter::ReloadWeapon()
 {
-	if (ActiveWeapon->GetCurrentAmmoCount() >= ActiveWeapon->GetMagazineSize() || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
+	if (ActiveWeapon->GetCurrentAmmoCount() >= ActiveWeapon->GetMagazineSize() || ActiveWeapon->GetReserveAmmoCount() <= 0 || PlayerCombatState == EPlayerCombatState::EPCS_Reloading) return;
 	ClearAttackTimer();
 	PlayerCombatState = EPlayerCombatState::EPCS_Reloading;
 	PlayMontageSection(CombatMontage, FName("Reload"));

@@ -30,7 +30,7 @@ void UPlayerOverlay::SetCrosshairSpread(float SpreadMultiplier, AWeapon* Current
 
 void UPlayerOverlay::SetCurrentAmmoCount(AWeapon* CurrentWeapon)
 {
-	if (CurrentWeapon) CurrentAmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), CurrentWeapon->GetCurrentAmmoCount(), CurrentWeapon->GetMagazineSize())));
+	if (CurrentWeapon) CurrentAmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d | %d"), CurrentWeapon->GetCurrentAmmoCount(), CurrentWeapon->GetReserveAmmoCount())));
 }
 
 void UPlayerOverlay::SetWeaponName(AWeapon* CurrentWeapon)

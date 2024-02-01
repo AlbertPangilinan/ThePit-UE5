@@ -74,7 +74,10 @@ void AWeapon::Fire()
 
 void AWeapon::Reload()
 {
-	CurrentAmmoCount = MagazineSize;
+	int32 AmmoToReload = MagazineSize - CurrentAmmoCount;
+	if (ReserveAmmoCount < AmmoToReload) AmmoToReload = ReserveAmmoCount;
+	CurrentAmmoCount += AmmoToReload;
+	ReserveAmmoCount -= AmmoToReload;
 }
 
 FHitResult AWeapon::LineOfSightLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
