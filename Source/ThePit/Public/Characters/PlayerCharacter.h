@@ -192,6 +192,11 @@ private:
 	// Combat
 	FTimerHandle AttackTimer;
 
+
+	// Interact
+	UPROPERTY(VisibleInstanceOnly)
+	AActor* OverlappingActor;
+
 public:
 	FORCEINLINE EPlayerStance GetPlayerStance() const { return PlayerStance; }
 	FORCEINLINE EPlayerAimState GetPlayerAimState() const { return PlayerAimState; }
@@ -199,4 +204,5 @@ public:
 	FORCEINLINE float GetSpreadMultiplier() const { return SpreadMultiplier; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 	FORCEINLINE float GetAimZ() const { return AimZ; }
+	FORCEINLINE void SetOverlappingActor(AActor* Actor) { OverlappingActor = Actor; }
 };
