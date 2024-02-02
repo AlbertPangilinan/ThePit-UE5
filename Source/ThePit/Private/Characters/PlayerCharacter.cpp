@@ -318,7 +318,10 @@ void APlayerCharacter::ClearAttackTimer()
 
 void APlayerCharacter::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Interact Key Pressed"));
+	if (OverlappingActor == LineOfSightActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Interactable"));
+	}
 }
 
 void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)

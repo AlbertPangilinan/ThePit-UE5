@@ -45,21 +45,12 @@ void AAmmoBox::BeginPlay()
 
 void AAmmoBox::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Begin Player Overlap"));
-		PlayerCharacter->SetOverlappingActor(this);
-
-	}
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) PlayerCharacter->SetOverlappingActor(this);
 }
 
 void AAmmoBox::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("End Player Overlap"));
-		PlayerCharacter->ClearOverlappingActor();
-	}
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) PlayerCharacter->ClearOverlappingActor();
 }
 
 void AAmmoBox::RefillAmmo()
