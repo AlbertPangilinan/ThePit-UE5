@@ -7,6 +7,9 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+// Interfaces
+#include "Interfaces/InteractInterface.h"
+
 // Enhanced Input
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
@@ -318,10 +321,7 @@ void APlayerCharacter::ClearAttackTimer()
 
 void APlayerCharacter::Interact()
 {
-	if (OverlappingActor == LineOfSightActor)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Interactable"));
-	}
+	if (OverlappingActor == LineOfSightActor) if (IInteractInterface* InteractInterface = Cast<IInteractInterface>(LineOfSightActor)) InteractInterface->Interact();
 }
 
 void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)

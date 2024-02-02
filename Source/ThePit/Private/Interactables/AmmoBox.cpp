@@ -34,6 +34,11 @@ void AAmmoBox::Tick(float DeltaTime)
 
 }
 
+void AAmmoBox::Interact()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Ammo Refilled"));
+}
+
 // Called when the game starts or when spawned
 void AAmmoBox::BeginPlay()
 {
@@ -51,9 +56,4 @@ void AAmmoBox::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 void AAmmoBox::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) PlayerCharacter->ClearOverlappingActor();
-}
-
-void AAmmoBox::RefillAmmo()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Ammo Refilled"));
 }

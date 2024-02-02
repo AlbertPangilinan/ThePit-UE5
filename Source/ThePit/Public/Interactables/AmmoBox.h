@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
+// Interfaces
+#include "Interfaces/InteractInterface.h"
+
 #include "AmmoBox.generated.h"
 
 
@@ -11,13 +15,14 @@ class USphereComponent;
 
 
 UCLASS()
-class THEPIT_API AAmmoBox : public AActor
+class THEPIT_API AAmmoBox : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	AAmmoBox(); // Sets default values for this actor's properties
 	virtual void Tick(float DeltaTime) override; // Called every frame
+	virtual void Interact() override;
 
 
 protected:
@@ -41,8 +46,6 @@ protected:
 
 
 private:	
-	// Functions
-	// Interact
-	void RefillAmmo();
+
 
 };
