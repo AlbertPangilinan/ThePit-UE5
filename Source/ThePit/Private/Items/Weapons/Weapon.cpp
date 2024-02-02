@@ -35,9 +35,6 @@ AWeapon::AWeapon()
 
 	MuzzleFlashOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleFlashOrigin"));
 	MuzzleFlashOrigin->SetupAttachment(GetRootComponent());
-
-	LeftHandPlacement = CreateDefaultSubobject<USceneComponent>(TEXT("LeftHandPlacement"));
-	LeftHandPlacement->SetupAttachment(GetRootComponent());
 }
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
