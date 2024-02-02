@@ -11,7 +11,11 @@
 #include "AmmoBox.generated.h"
 
 
+// Components
 class USphereComponent;
+
+// Combat
+class AWeapon;
 
 
 UCLASS()
@@ -46,6 +50,9 @@ protected:
 
 
 private:	
+	// Variables
+	// Weapon
+	AWeapon* ActiveWeapon;
 
 
 };

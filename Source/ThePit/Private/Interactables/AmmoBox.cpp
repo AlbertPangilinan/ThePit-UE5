@@ -9,6 +9,10 @@
 // Player Character
 #include "Characters/PlayerCharacter.h"
 
+// Combat
+#include "Items/Weapons/Weapon.h"
+
+
 
 // Sets default values
 AAmmoBox::AAmmoBox()
@@ -36,7 +40,7 @@ void AAmmoBox::Tick(float DeltaTime)
 
 void AAmmoBox::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Ammo Refilled"));
+	if (ActiveWeapon && ActiveWeapon->GetReserveAmmoCount() < ActiveWeapon->GetMaxReserveAmmo()) ActiveWeapon->SetReserveAmmoCount(ActiveWeapon->GetMaxReserveAmmo());
 }
 
 // Called when the game starts or when spawned
@@ -50,10 +54,18 @@ void AAmmoBox::BeginPlay()
 
 void AAmmoBox::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) PlayerCharacter->SetOverlappingActor(this);
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->SetOverlappingActor(this);
+		ActiveWeapon = PlayerCharacter->GetActiveWeapon();
+	}
 }
 
 void AAmmoBox::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) PlayerCharacter->ClearOverlappingActor();
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->ClearOverlappingActor();
+		ActiveWeapon = nullptr;
+	}
 }

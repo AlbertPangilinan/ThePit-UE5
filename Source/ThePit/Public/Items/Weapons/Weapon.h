@@ -83,6 +83,9 @@ private:
 	int32 MagazineSize = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	int32 MaxReserveAmmo = 60;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	USoundBase* FiringSound;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
@@ -97,5 +100,7 @@ public:
 	FORCEINLINE float GetSpread() const { return Spread; }
 	FORCEINLINE int32 GetCurrentAmmoCount() const { return CurrentAmmoCount; }
 	FORCEINLINE int32 GetReserveAmmoCount() const { return ReserveAmmoCount; }
+	FORCEINLINE void SetReserveAmmoCount(int32 NewAmmoCount) { ReserveAmmoCount = NewAmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
+	FORCEINLINE int32 GetMaxReserveAmmo() const { return MaxReserveAmmo; }
 };
