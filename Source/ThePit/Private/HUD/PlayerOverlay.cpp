@@ -11,6 +11,10 @@
 // Weapon
 #include "Items/Weapons/Weapon.h"
 
+// Interfaces
+#include "Interfaces/InteractInterface.h"
+
+
 void UPlayerOverlay::SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon)
 {
 	if (CurrentWeapon == nullptr) return;
@@ -55,4 +59,14 @@ void UPlayerOverlay::SetFireMode(AWeapon* CurrentWeapon)
 	default:
 		break;
 	}
+}
+
+void UPlayerOverlay::SetInteractAction(IInteractInterface* InteractableActor)
+{
+	InteractAction->SetText(FText::FromString(FString::Printf(TEXT("[F] %s"), *InteractableActor->GetInteractText())));
+}
+
+void UPlayerOverlay::ClearInteractAction()
+{
+	InteractAction->SetText(FText());
 }

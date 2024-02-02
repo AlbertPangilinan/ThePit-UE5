@@ -40,9 +40,12 @@ public:
 	virtual void Tick(float DeltaTime) override; // Called every frame
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // Called to bind functionality to input
 
+	// Functions
+	// Camera
 	FVector GetCameraLocation();
 	FVector GetCameraRotation();
 
+	// Weapon
 	UFUNCTION(BlueprintCallable)
 	AWeapon* GetActiveWeapon();
 
@@ -53,7 +56,6 @@ public:
 protected:
 	// Functions
 	virtual void BeginPlay() override; // Called when the game starts or when spawned
-
 
 	// Enhanced Input
 	void Move(const FInputActionValue& Value);
@@ -73,7 +75,6 @@ protected:
 	// Animation
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
 
-
 	// Combat
 	void CalculateSpreadMultiplier();
 	void EquipWeapon();
@@ -90,6 +91,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void EndReloadActiveWeapon();
+
 
 	// Variables
 	// Enhanced Input
@@ -178,7 +180,10 @@ private:
 	void SwitchWeaponSockets();
 
 	// Interact
+	void UpdateInteractHUD();
 	void GetLineOfSightActor();
+	bool CanInteract();
+	
 
 	// Variables
 	// Camera

@@ -61,11 +61,16 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Interact
 	GetLineOfSightActor();
+	UpdateInteractHUD();
+
+	// Weapon Aim
 	CalculateSpreadMultiplier();
 	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetCurrentAmmoCount() <= 0 && ActiveWeapon->GetReserveAmmoCount() > 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
 
+	// ADS/Stance Toggle Interp
 	if (CameraBoom->SocketOffset.Z != TargetCameraPosition)
 	{
 		CameraBoom->SocketOffset.Z = UKismetMathLibrary::FInterpTo_Constant(CameraBoom->SocketOffset.Z, TargetCameraPosition, DeltaTime, 500.f);
@@ -321,7 +326,11 @@ void APlayerCharacter::ClearAttackTimer()
 
 void APlayerCharacter::Interact()
 {
-	if (OverlappingActor == LineOfSightActor) if (IInteractInterface* InteractInterface = Cast<IInteractInterface>(LineOfSightActor)) InteractInterface->Interact();
+	if (CanInteract())
+	{
+		IInteractInterface* InteractableActor = Cast<IInteractInterface>(LineOfSightActor);
+		InteractableActor->Interact();
+	}
 }
 
 void APlayerCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
@@ -441,6 +450,28 @@ void APlayerCharacter::SwitchWeaponSockets()
 	}
 }
 
+void APlayerCharacter::UpdateInteractHUD()
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
+		{
+			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
+			{
+				if (CanInteract())
+				{
+					IInteractInterface* InteractableActor = Cast<IInteractInterface>(LineOfSightActor);
+					PlayerOverlay->SetInteractAction(InteractableActor);
+				}
+				else
+				{
+					PlayerOverlay->ClearInteractAction();
+				}
+			}
+		}
+	}
+}
+
 void APlayerCharacter::GetLineOfSightActor()
 {
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
@@ -451,4 +482,9 @@ void APlayerCharacter::GetLineOfSightActor()
 
 	FHitResult LineOfSightResult = LineOfSightLineTrace(ObjectTypes, ActorsToIgnore);
 	if (LineOfSightResult.IsValidBlockingHit()) LineOfSightActor = LineOfSightResult.GetActor();
+}
+
+bool APlayerCharacter::CanInteract()
+{
+	return ((OverlappingActor == LineOfSightActor) && (Cast<IInteractInterface>(LineOfSightActor)));
 }

@@ -18,6 +18,8 @@ class UTextBlock;
 // Weapon
 class AWeapon;
 
+// Interact
+class IInteractInterface;
 
 /**
  * 
@@ -29,13 +31,20 @@ class THEPIT_API UPlayerOverlay : public UUserWidget
 	
 public:
 	// Functions
+	// Crosshair
 	void SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon);
+
+	// Weapon
 	void SetCurrentAmmoCount(AWeapon* CurrentWeapon);
 	void SetWeaponName(AWeapon* CurrentWeapon);
 	void SetFireMode(AWeapon* CurrentWeapon);
 
+	// Interact
+	void SetInteractAction(IInteractInterface* OverlappingActor);
+	void ClearInteractAction();
 
 	// Variables
+	// Crosshair
 	UPROPERTY(meta = (BindWidget))
 	UImage* CrosshairTop;
 
@@ -48,6 +57,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UImage* CrosshairRight;
 
+	// Weapon
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* CurrentAmmoCount;
 
@@ -56,6 +66,11 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* FireMode;
+
+	// Interact
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* InteractAction;
+
 
 private:
 	// Variables

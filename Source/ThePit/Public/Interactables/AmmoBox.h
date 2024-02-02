@@ -54,5 +54,12 @@ private:
 	// Weapon
 	AWeapon* ActiveWeapon;
 
+	// Interact
+	UPROPERTY(EditAnywhere, Category = "Interact Properties")
+	FString InteractText = "";
+
+public:
+	FORCEINLINE virtual FString GetInteractText() override { return InteractText; }
+
 
 };
