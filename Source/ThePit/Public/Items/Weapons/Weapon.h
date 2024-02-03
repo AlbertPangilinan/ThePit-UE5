@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "Items/Item.h"
 
+// Interfaces
+#include "Interfaces/InteractInterface.h"
+
 // Enums
 #include "WeaponEnums.h"
 
@@ -18,14 +21,17 @@ class APlayerCharacter;
 
 
 UCLASS()
-class THEPIT_API AWeapon : public AItem
+class THEPIT_API AWeapon : public AItem, public IInteractInterface
 {
 	GENERATED_BODY()
 	
 public:
-	AWeapon();
+	AWeapon(); // Sets default values for this actor's properties
 
 	// Functions
+	// Interact
+	virtual void Interact() override;
+
 	// Combat
 	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 	void Fire();
@@ -33,6 +39,15 @@ public:
 
 
 protected:
+	virtual void BeginPlay() override; // Called when the game starts or when spawned
+
+	// Functions
+	// Interact
+	UFUNCTION()
+	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 
 private:
@@ -88,6 +103,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	UNiagaraSystem* MuzzleFlashEffect;
 
+	// Overlapping Player
+	APlayerCharacter* OverlappingPlayerCharacter;
+
 
 public:
 	FORCEINLINE FString GetWeaponName() const { return WeaponName;  }
@@ -100,4 +118,5 @@ public:
 	FORCEINLINE void SetReserveAmmoCount(int32 NewAmmoCount) { ReserveAmmoCount = NewAmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
 	FORCEINLINE int32 GetMaxReserveAmmo() const { return MaxReserveAmmo; }
+	FORCEINLINE virtual FString GetInteractText() override { return WeaponName; }
 };

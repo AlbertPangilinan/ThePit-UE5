@@ -16,11 +16,13 @@ AItem::AItem()
 	// Mesh Setup
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
 	ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ItemMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetRootComponent(ItemMesh);
 
 	// Interact Radius Setup
 	InteractRadius = CreateDefaultSubobject<USphereComponent>(TEXT("InteractRadius"));
+	InteractRadius->SetSphereRadius(64.f);
 	InteractRadius->SetupAttachment(GetRootComponent());
 
 }
