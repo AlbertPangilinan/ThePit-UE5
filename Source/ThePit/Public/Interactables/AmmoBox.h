@@ -25,7 +25,9 @@ class THEPIT_API AAmmoBox : public AActor, public IInteractInterface
 	
 public:	
 	AAmmoBox(); // Sets default values for this actor's properties
-	virtual void Tick(float DeltaTime) override; // Called every frame
+
+	// Functions
+	// Interact
 	virtual void Interact() override;
 
 
@@ -57,6 +59,7 @@ private:
 	// Interact
 	UPROPERTY(EditAnywhere, Category = "Interact Properties")
 	FString InteractText = "";
+
 
 public:
 	FORCEINLINE virtual FString GetInteractText() override { return InteractText; }

@@ -13,7 +13,6 @@
 #include "Items/Weapons/Weapon.h"
 
 
-
 // Sets default values
 AAmmoBox::AAmmoBox()
 {
@@ -28,13 +27,6 @@ AAmmoBox::AAmmoBox()
 	// Interact Radius Setup
 	InteractRadius = CreateDefaultSubobject<USphereComponent>(TEXT("InteractRadius"));
 	InteractRadius->SetupAttachment(GetRootComponent());
-
-}
-
-// Called every frame
-void AAmmoBox::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
 }
 
