@@ -48,7 +48,7 @@ void AAmmoBox::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
 	{
-		PlayerCharacter->SetOverlappingActor(this);
+		PlayerCharacter->AddOverlappingActor(this);
 		ActiveWeapon = PlayerCharacter->GetActiveWeapon();
 	}
 }
@@ -57,7 +57,7 @@ void AAmmoBox::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
 	{
-		PlayerCharacter->ClearOverlappingActor();
+		PlayerCharacter->RemoveOverlappingActor(this);
 		ActiveWeapon = nullptr;
 	}
 }

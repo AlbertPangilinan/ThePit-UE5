@@ -486,5 +486,5 @@ void APlayerCharacter::GetLineOfSightActor()
 
 bool APlayerCharacter::CanInteract()
 {
-	return ((OverlappingActor == LineOfSightActor) && (Cast<IInteractInterface>(LineOfSightActor)));
+	return ((OverlappingActors.Contains(LineOfSightActor)) && (Cast<IInteractInterface>(LineOfSightActor)));
 }
