@@ -16,7 +16,7 @@ AItem::AItem()
 	// Mesh Setup
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
 	ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	ItemMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
+	ItemMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Block);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetRootComponent(ItemMesh);
 

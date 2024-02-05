@@ -208,6 +208,9 @@ private:
 
 	// Interact
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)
+	TArray<AActor*> OverlappingActors;
+	
+	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AActor* OverlappingActor;
 
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)
@@ -221,6 +224,8 @@ public:
 	FORCEINLINE float GetSpreadMultiplier() const { return SpreadMultiplier; }
 	FORCEINLINE FVector2D GetMovementVector() const { return MovementVector; }
 	FORCEINLINE float GetAimZ() const { return AimZ; }
+	FORCEINLINE void AddOverlappingActor(AActor* Actor) { OverlappingActors.AddUnique(Actor); }
+	FORCEINLINE void RemoveOverlappingActor(AActor* Actor) { OverlappingActors.RemoveSingle(Actor); }
 	FORCEINLINE void SetOverlappingActor(AActor* Actor) { OverlappingActor = Actor; }
 	FORCEINLINE void ClearOverlappingActor() { OverlappingActor = nullptr; }
 };
