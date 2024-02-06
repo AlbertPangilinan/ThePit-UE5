@@ -6,6 +6,9 @@
 // Components
 #include "Components/SphereComponent.h"
 
+// Player Character
+#include "Characters/PlayerCharacter.h"
+
 
 // Sets default values
 AItem::AItem()
@@ -34,9 +37,34 @@ void AItem::Tick(float DeltaTime)
 
 }
 
+void AItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->AddOverlappingActor(this);
+		OverlappingPlayerCharacter = PlayerCharacter;
+	}
+}
+
+void AItem::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->RemoveOverlappingActor(this);
+		OverlappingPlayerCharacter = nullptr;
+	}
+}
+
+void AItem::Interact()
+{
+}
+
 // Called when the game starts or when spawned
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	InteractRadius->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnBeginOverlap);
+	InteractRadius->OnComponentEndOverlap.AddDynamic(this, &AItem::OnEndOverlap);
+
 }

@@ -30,6 +30,24 @@ AAmmoBox::AAmmoBox()
 
 }
 
+void AAmmoBox::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->AddOverlappingActor(this);
+		ActiveWeapon = PlayerCharacter->GetActiveWeapon();
+	}
+}
+
+void AAmmoBox::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->RemoveOverlappingActor(this);
+		ActiveWeapon = nullptr;
+	}
+}
+
 void AAmmoBox::Interact()
 {
 	if (ActiveWeapon && ActiveWeapon->GetReserveAmmoCount() < ActiveWeapon->GetMaxReserveAmmo()) ActiveWeapon->SetReserveAmmoCount(ActiveWeapon->GetMaxReserveAmmo());
@@ -39,25 +57,7 @@ void AAmmoBox::Interact()
 void AAmmoBox::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	InteractRadius->OnComponentBeginOverlap.AddDynamic(this, &AAmmoBox::OnSphereBeginOverlap);
-	InteractRadius->OnComponentEndOverlap.AddDynamic(this, &AAmmoBox::OnSphereEndOverlap);
-}
 
-void AAmmoBox::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		PlayerCharacter->AddOverlappingActor(this);
-		ActiveWeapon = PlayerCharacter->GetActiveWeapon();
-	}
-}
-
-void AAmmoBox::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		PlayerCharacter->RemoveOverlappingActor(this);
-		ActiveWeapon = nullptr;
-	}
+	InteractRadius->OnComponentBeginOverlap.AddDynamic(this, &AAmmoBox::OnBeginOverlap);
+	InteractRadius->OnComponentEndOverlap.AddDynamic(this, &AAmmoBox::OnEndOverlap);
 }

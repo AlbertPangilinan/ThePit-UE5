@@ -3,9 +3,6 @@
 
 #include "Items/Weapons/Weapon.h"
 
-// Components
-#include "Components/SphereComponent.h"
-
 // Player Character
 #include "Characters/PlayerCharacter.h"
 
@@ -38,10 +35,6 @@ AWeapon::AWeapon()
 
 	MuzzleFlashOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleFlashOrigin"));
 	MuzzleFlashOrigin->SetupAttachment(GetRootComponent());
-}
-
-void AWeapon::Interact()
-{
 }
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
@@ -88,27 +81,6 @@ void AWeapon::Reload()
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-
-	InteractRadius->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereBeginOverlap);
-	InteractRadius->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);
-}
-
-void AWeapon::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		PlayerCharacter->AddOverlappingActor(this);
-		OverlappingPlayerCharacter = PlayerCharacter;
-	}
-}
-
-void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		PlayerCharacter->RemoveOverlappingActor(this);
-		OverlappingPlayerCharacter = nullptr;
-	}
 }
 
 FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult)
