@@ -58,9 +58,6 @@ private:
 
 	// Weapon Properties
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	FString WeaponName = "WeaponName";
-	
-	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	float Damage = 20.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
@@ -92,7 +89,7 @@ private:
 
 
 public:
-	FORCEINLINE FString GetWeaponName() const { return WeaponName;  }
+	FORCEINLINE FString GetWeaponName() const { return ItemName; }
 	FORCEINLINE float GetRateOfFireSeconds() { return 60.f / RateOfFire; }
 	FORCEINLINE EWeaponFireMode GetFireMode() const { return FireMode; }
 	FORCEINLINE void SetFireMode(EWeaponFireMode NewFireMode) { FireMode = NewFireMode; }
@@ -102,5 +99,4 @@ public:
 	FORCEINLINE void SetReserveAmmoCount(int32 NewAmmoCount) { ReserveAmmoCount = NewAmmoCount; }
 	FORCEINLINE int32 GetMagazineSize() const { return MagazineSize; }
 	FORCEINLINE int32 GetMaxReserveAmmo() const { return MaxReserveAmmo; }
-	FORCEINLINE virtual FString GetInteractText() override { return WeaponName; }
 };

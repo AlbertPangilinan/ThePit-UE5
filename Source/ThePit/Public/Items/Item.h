@@ -46,15 +46,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* InteractRadius;
 
-
-private:
-	// Variables
 	// Item Properties
 	UPROPERTY(EditAnywhere, Category = "Item Properties")
 	FString ItemName = "ItemName";
 
 	// Overlapping Player
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APlayerCharacter* OverlappingPlayerCharacter;
+
+
+private:
 
 
 public:
