@@ -45,12 +45,8 @@ public:
 	FVector GetCameraLocation();
 	FVector GetCameraRotation();
 
-	// Weapon
-	UFUNCTION(BlueprintCallable)
-	AWeapon* GetActiveWeapon();
-
+	// Utility
 	FHitResult LineOfSightLineTrace(TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore);
-
 	double GetGroundSpeed();
 
 protected:
@@ -223,6 +219,6 @@ public:
 	FORCEINLINE float GetAimZ() const { return AimZ; }
 	FORCEINLINE void AddOverlappingActor(AActor* Actor) { OverlappingActors.AddUnique(Actor); }
 	FORCEINLINE void RemoveOverlappingActor(AActor* Actor) { OverlappingActors.RemoveSingle(Actor); }
-
-
+	FORCEINLINE AWeapon* GetActiveWeapon() { return ActiveWeapon; }
+	FORCEINLINE void SetActiveWeapon(AWeapon* Weapon) { ActiveWeapon = Weapon; }
 };

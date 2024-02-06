@@ -112,12 +112,6 @@ FVector APlayerCharacter::GetCameraRotation()
 	return ViewCamera->GetComponentRotation().GetNormalized().Vector();
 }
 
-AWeapon* APlayerCharacter::GetActiveWeapon()
-{
-	if (ActiveWeapon) return ActiveWeapon;
-	return nullptr;
-}
-
 FHitResult APlayerCharacter::LineOfSightLineTrace(TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore)
 {
 	FHitResult LineOfSightResult;
