@@ -40,7 +40,7 @@ public:
 	void SetFireMode(AWeapon* CurrentWeapon);
 
 	// Interact
-	void SetInteractAction(IInteractInterface* OverlappingActor);
+	void SetInteractAction(IInteractInterface* InteractableActor);
 	void ClearInteractAction();
 
 	// Variables

@@ -35,7 +35,6 @@ public:
 	virtual void Interact() override;
 
 
-
 protected:
 	virtual void BeginPlay() override; // Called when the game starts or when spawned
 
