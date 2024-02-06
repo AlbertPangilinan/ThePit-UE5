@@ -43,6 +43,7 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOw
 	SetInstigator(NewInstigator);
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AWeapon::Fire()
@@ -75,6 +76,11 @@ void AWeapon::Reload()
 	if (ReserveAmmoCount < AmmoToReload) AmmoToReload = ReserveAmmoCount;
 	CurrentAmmoCount += AmmoToReload;
 	ReserveAmmoCount -= AmmoToReload;
+}
+
+void AWeapon::Interact()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Interacted with: %s"), *GetWeaponName());
 }
 
 // Called when the game starts or when spawned

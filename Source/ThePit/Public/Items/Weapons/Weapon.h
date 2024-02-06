@@ -32,6 +32,9 @@ public:
 	void Fire();
 	void Reload();
 
+	// Interact
+	virtual void Interact() override;
+
 
 protected:
 	virtual void BeginPlay() override; // Called when the game starts or when spawned

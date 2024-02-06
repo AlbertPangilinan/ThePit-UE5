@@ -475,10 +475,12 @@ void APlayerCharacter::UpdateInteractHUD()
 void APlayerCharacter::GetLineOfSightActor()
 {
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
+	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery2);
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(GetOwner());
+	ActorsToIgnore.Add(EquippedWeapon1);
+	ActorsToIgnore.Add(EquippedWeapon2);
 
 	FHitResult LineOfSightResult = LineOfSightLineTrace(ObjectTypes, ActorsToIgnore);
 	if (LineOfSightResult.IsValidBlockingHit()) LineOfSightActor = LineOfSightResult.GetActor();
