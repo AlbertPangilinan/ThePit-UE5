@@ -5,6 +5,7 @@
 
 // Components
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 // Player Character
 #include "Characters/PlayerCharacter.h"
@@ -48,6 +49,7 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOw
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	InteractRadius->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AWeapon::Fire()

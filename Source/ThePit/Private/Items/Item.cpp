@@ -5,6 +5,7 @@
 
 // Components
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 // Player Character
 #include "Characters/PlayerCharacter.h"
@@ -24,12 +25,20 @@ AItem::AItem()
 
 	// Interact Radius Setup
 	InteractRadius = CreateDefaultSubobject<USphereComponent>(TEXT("InteractRadius"));
-	InteractRadius->SetSphereRadius(64.f);
+	InteractRadius->SetSphereRadius(128.f);
 	InteractRadius->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 	InteractRadius->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	InteractRadius->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	InteractRadius->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	InteractRadius->SetupAttachment(GetRootComponent());
+
+	// Line of Sight Bounds Setup
+	LineOfSightBounds = CreateDefaultSubobject<UBoxComponent>(TEXT("LineOfSightBounds"));
+	LineOfSightBounds->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	LineOfSightBounds->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	LineOfSightBounds->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	LineOfSightBounds->SetupAttachment(GetRootComponent());
 }
 
 // Called every frame

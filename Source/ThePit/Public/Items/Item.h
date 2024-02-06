@@ -12,6 +12,7 @@
 
 
 class USphereComponent;
+class UBoxComponent;
 class APlayerCharacter;
 
 
@@ -44,6 +45,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* InteractRadius;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBoxComponent* LineOfSightBounds;
 
 	// Item Properties
 	UPROPERTY(EditAnywhere, Category = "Item Properties")
