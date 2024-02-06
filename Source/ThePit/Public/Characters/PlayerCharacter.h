@@ -149,6 +149,9 @@ protected:
 	AWeapon* ActiveWeapon;
 
 	UPROPERTY(VisibleAnywhere, Category = Combat)
+	AWeapon* ReserveWeapon;
+
+	UPROPERTY(VisibleAnywhere, Category = Combat)
 	AWeapon* EquippedWeapon1;
 
 	UPROPERTY(VisibleAnywhere, Category = Combat)
@@ -221,4 +224,6 @@ public:
 	FORCEINLINE void RemoveOverlappingActor(AActor* Actor) { OverlappingActors.RemoveSingle(Actor); }
 	FORCEINLINE AWeapon* GetActiveWeapon() { return ActiveWeapon; }
 	FORCEINLINE void SetActiveWeapon(AWeapon* Weapon) { ActiveWeapon = Weapon; }
+	FORCEINLINE AWeapon* GetReserveWeapon() { return ReserveWeapon; }
+	FORCEINLINE void SetReserveWeapon(AWeapon* Weapon) { ReserveWeapon = Weapon; }
 };
