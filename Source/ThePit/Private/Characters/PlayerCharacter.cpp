@@ -483,7 +483,14 @@ void APlayerCharacter::GetLineOfSightActor()
 	ActorsToIgnore.Add(EquippedWeapon2);
 
 	FHitResult LineOfSightResult = LineOfSightLineTrace(ObjectTypes, ActorsToIgnore);
-	if (LineOfSightResult.IsValidBlockingHit()) LineOfSightActor = LineOfSightResult.GetActor();
+	if (LineOfSightResult.IsValidBlockingHit())
+	{
+		LineOfSightActor = LineOfSightResult.GetActor();
+	}
+	else
+	{
+		LineOfSightActor = nullptr;
+	}
 }
 
 bool APlayerCharacter::CanInteract()

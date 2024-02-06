@@ -3,6 +3,9 @@
 
 #include "Items/Weapons/Weapon.h"
 
+// Components
+#include "Components/SphereComponent.h"
+
 // Player Character
 #include "Characters/PlayerCharacter.h"
 
@@ -44,6 +47,7 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOw
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	InteractRadius->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AWeapon::Fire()
