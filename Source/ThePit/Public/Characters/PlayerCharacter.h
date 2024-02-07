@@ -151,12 +151,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Combat)
 	AWeapon* ReserveWeapon;
 
-	//UPROPERTY(VisibleAnywhere, Category = Combat)
-	//AWeapon* EquippedWeapon1;
-
-	//UPROPERTY(VisibleAnywhere, Category = Combat)
-	//AWeapon* EquippedWeapon2;
-
 	UPROPERTY(VisibleAnywhere, Category = Combat)
 	float SpreadMultiplier = 1.f;
 

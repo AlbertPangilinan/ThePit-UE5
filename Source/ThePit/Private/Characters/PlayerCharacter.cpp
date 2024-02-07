@@ -356,7 +356,6 @@ void APlayerCharacter::EquipWeapon()
 		{
 			AWeapon* Weapon1 = World->SpawnActor<AWeapon>(Weapon1Class);
 			Weapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-			//EquippedWeapon1 = Weapon1;
 			ActiveWeapon = Weapon1;
 		}
 
@@ -364,7 +363,6 @@ void APlayerCharacter::EquipWeapon()
 		{
 			AWeapon* Weapon2 = World->SpawnActor<AWeapon>(Weapon2Class);
 			Weapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
-			//EquippedWeapon2 = Weapon2;
 			ReserveWeapon = Weapon2;
 		}
 	}
@@ -436,20 +434,6 @@ void APlayerCharacter::SwitchWeaponSockets()
 	AWeapon* TempWeapon = ReserveWeapon;
 	ReserveWeapon = ActiveWeapon;
 	ActiveWeapon = TempWeapon;
-
-	/*if (ActiveWeapon == EquippedWeapon1)
-	{
-		ActiveWeapon = EquippedWeapon2;
-		EquippedWeapon2->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		EquippedWeapon1->Equip(GetMesh(), FName("BackSocket"), this, this);
-
-	}
-	else
-	{
-		ActiveWeapon = EquippedWeapon1;
-		EquippedWeapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		EquippedWeapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
-	}*/
 }
 
 void APlayerCharacter::UpdateInteractHUD()
@@ -481,8 +465,6 @@ void APlayerCharacter::GetLineOfSightActor()
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(GetOwner());
-	//ActorsToIgnore.Add(EquippedWeapon1);
-	//ActorsToIgnore.Add(EquippedWeapon2);
 	ActorsToIgnore.Add(ActiveWeapon);
 	ActorsToIgnore.Add(ReserveWeapon);
 
