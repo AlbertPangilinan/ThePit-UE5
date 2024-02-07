@@ -290,6 +290,7 @@ void APlayerCharacter::CycleFireMode()
 
 void APlayerCharacter::SwitchWeapon()
 {
+	if (ReserveWeapon == nullptr) return;
 	ClearAttackTimer();
 	StopAnimMontage();
 	PlayerCombatState = EPlayerCombatState::EPCS_SwitchingWeapons;
