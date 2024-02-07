@@ -17,47 +17,60 @@
 
 void UPlayerOverlay::SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon)
 {
-	if (CurrentWeapon == nullptr) return;
+	if (CurrentWeapon == nullptr)
+	{
 
-	float CrosshairSpread = CurrentWeapon->GetSpread() * SpreadMultiplier * CrosshairOffset;
+	}
+	else
+	{
+		float CrosshairSpread = CurrentWeapon->GetSpread() * SpreadMultiplier * CrosshairOffset;
 
-	UCanvasPanelSlot* CrosshairTopSlot = CastChecked<UCanvasPanelSlot>(CrosshairTop->Slot);
-	UCanvasPanelSlot* CrosshairBotSlot = CastChecked<UCanvasPanelSlot>(CrosshairBot->Slot);
-	UCanvasPanelSlot* CrosshairLeftSlot = CastChecked<UCanvasPanelSlot>(CrosshairLeft->Slot);
-	UCanvasPanelSlot* CrosshairRightSlot = CastChecked<UCanvasPanelSlot>(CrosshairRight->Slot);
+		UCanvasPanelSlot* CrosshairTopSlot = CastChecked<UCanvasPanelSlot>(CrosshairTop->Slot);
+		UCanvasPanelSlot* CrosshairBotSlot = CastChecked<UCanvasPanelSlot>(CrosshairBot->Slot);
+		UCanvasPanelSlot* CrosshairLeftSlot = CastChecked<UCanvasPanelSlot>(CrosshairLeft->Slot);
+		UCanvasPanelSlot* CrosshairRightSlot = CastChecked<UCanvasPanelSlot>(CrosshairRight->Slot);
 
-	CrosshairTopSlot->SetPosition(FVector2D(0.f, -CrosshairSpread));
-	CrosshairBotSlot->SetPosition(FVector2D(0.f, CrosshairSpread));
-	CrosshairLeftSlot->SetPosition(FVector2D(-CrosshairSpread, 0.f));
-	CrosshairRightSlot->SetPosition(FVector2D(CrosshairSpread, 0.f));
+		CrosshairTopSlot->SetPosition(FVector2D(0.f, -CrosshairSpread));
+		CrosshairBotSlot->SetPosition(FVector2D(0.f, CrosshairSpread));
+		CrosshairLeftSlot->SetPosition(FVector2D(-CrosshairSpread, 0.f));
+		CrosshairRightSlot->SetPosition(FVector2D(CrosshairSpread, 0.f));
+	}
 }
 
 void UPlayerOverlay::SetCurrentAmmoCount(AWeapon* CurrentWeapon)
 {
 	if (CurrentWeapon) CurrentAmmoCount->SetText(FText::FromString(FString::Printf(TEXT("%d | %d"), CurrentWeapon->GetCurrentAmmoCount(), CurrentWeapon->GetReserveAmmoCount())));
+	else CurrentAmmoCount->SetText(FText());
 }
 
 void UPlayerOverlay::SetWeaponName(AWeapon* CurrentWeapon)
 {
 	if (CurrentWeapon) WeaponName->SetText(FText::FromString(CurrentWeapon->GetWeaponName()));
+	else WeaponName->SetText(FText());
+
 }
 
 void UPlayerOverlay::SetFireMode(AWeapon* CurrentWeapon)
 {
-	if (CurrentWeapon == nullptr) return;
-
-	EWeaponFireMode CurrentFireMode = CurrentWeapon->GetFireMode();
-
-	switch (CurrentFireMode)
+	if (CurrentWeapon == nullptr)
 	{
-	case EWeaponFireMode::EWFM_FullAuto:
-		FireMode->SetText(FText::FromString(FString::Printf(TEXT("Full Auto"))));
-		break;
-	case EWeaponFireMode::EWFM_SemiAuto:
-		FireMode->SetText(FText::FromString(FString::Printf(TEXT("Semi Auto"))));
-		break;
-	default:
-		break;
+		FireMode->SetText(FText());
+	}
+	else
+	{
+		EWeaponFireMode CurrentFireMode = CurrentWeapon->GetFireMode();
+
+		switch (CurrentFireMode)
+		{
+		case EWeaponFireMode::EWFM_FullAuto:
+			FireMode->SetText(FText::FromString(FString::Printf(TEXT("Full Auto"))));
+			break;
+		case EWeaponFireMode::EWFM_SemiAuto:
+			FireMode->SetText(FText::FromString(FString::Printf(TEXT("Semi Auto"))));
+			break;
+		default:
+			break;
+		}
 	}
 }
 

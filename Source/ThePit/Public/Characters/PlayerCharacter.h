@@ -166,7 +166,10 @@ protected:
 
 private:
 	// Functions
+	// Initialization
+
 	// Combat
+	void InitializeCameraSettings();
 	void UpdateWeaponHUD();
 	void SwitchWeaponSockets();
 

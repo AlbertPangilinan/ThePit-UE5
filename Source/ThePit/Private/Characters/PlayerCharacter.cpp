@@ -133,8 +133,8 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TargetCameraPosition = CameraBoom->SocketOffset.Z;
-	TargetCameraZoom = CameraBoom->TargetArmLength;
+	UpdateWeaponHUD();
+	InitializeCameraSettings();
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -406,6 +406,12 @@ void APlayerCharacter::EndReloadActiveWeapon()
 		UpdateWeaponHUD();
 		PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 	}
+}
+
+void APlayerCharacter::InitializeCameraSettings()
+{
+	TargetCameraPosition = CameraBoom->SocketOffset.Z;
+	TargetCameraZoom = CameraBoom->TargetArmLength;
 }
 
 void APlayerCharacter::UpdateWeaponHUD()
