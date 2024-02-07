@@ -46,8 +46,10 @@ public:
 	FVector GetCameraRotation();
 
 	// Utility
+	void EquipWeapon(AWeapon* Weapon);
 	FHitResult LineOfSightLineTrace(TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore);
 	double GetGroundSpeed();
+
 
 protected:
 	// Functions
@@ -73,7 +75,6 @@ protected:
 
 	// Combat
 	void CalculateSpreadMultiplier();
-	void EquipWeapon();
 	void ReloadWeapon();
 
 	UFUNCTION(BlueprintCallable)
@@ -124,7 +125,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* InteractAction;
 
-
 	// Player State
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EPlayerStance PlayerStance = EPlayerStance::EPS_Standing;
@@ -135,14 +135,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EPlayerCombatState PlayerCombatState = EPlayerCombatState::EPCS_Aiming;
 
-
 	// Movement
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D MovementVector;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float AimZ;
-
 
 	// Combat
 	UPROPERTY(VisibleAnywhere, Category = Combat)
@@ -189,15 +187,12 @@ private:
 	float TargetCameraPosition;
 	float TargetCameraZoom;
 
-
 	// Animation
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
 	UAnimMontage* CombatMontage;
 
-
 	// Combat
 	FTimerHandle AttackTimer;
-
 
 	// Interact
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)

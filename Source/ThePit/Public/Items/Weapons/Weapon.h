@@ -27,8 +27,12 @@ public:
 	AWeapon(); // Sets default values for this actor's properties
 
 	// Functions
+	// Equip
+	void Equip(FName Socket);
+	void Drop();
+	//void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
+
 	// Combat
-	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 	void Fire();
 	void Reload();
 
@@ -42,6 +46,14 @@ protected:
 
 private:
 	// Functions
+	// Collision
+	void EnableCollision();
+	void DisableCollision();
+
+	// Equip
+	void AttachToSocket(FName Socket);
+	void DetachFromSocket();
+
 	// Combat
 	FHitResult HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult);
 	float CalculateAxisDeviation(APlayerCharacter* PlayerCharacter);

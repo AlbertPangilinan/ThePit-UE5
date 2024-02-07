@@ -41,15 +41,16 @@ AWeapon::AWeapon()
 	MuzzleFlashOrigin->SetupAttachment(GetRootComponent());
 }
 
-void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
+void AWeapon::Equip(FName Socket)
 {
-	SetOwner(NewOwner);
-	SetInstigator(NewInstigator);
-	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
-	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
-	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	InteractRadius->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	AttachToSocket(Socket);
+	DisableCollision();
+}
+
+void AWeapon::Drop()
+{
+	DetachFromSocket();
+	EnableCollision();
 }
 
 void AWeapon::Fire()
@@ -86,13 +87,43 @@ void AWeapon::Reload()
 
 void AWeapon::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Interacted with: %s"), *GetWeaponName());
+	if (OverlappingPlayerCharacter) OverlappingPlayerCharacter->EquipWeapon(this);
 }
 
 // Called when the game starts or when spawned
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AWeapon::EnableCollision()
+{
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	InteractRadius->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void AWeapon::DisableCollision()
+{
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	InteractRadius->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AWeapon::AttachToSocket(FName Socket)
+{
+	SetOwner(OverlappingPlayerCharacter);
+	SetInstigator(OverlappingPlayerCharacter);
+	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+	ItemMesh->AttachToComponent(OverlappingPlayerCharacter->GetMesh(), TransformRules, Socket);
+}
+
+void AWeapon::DetachFromSocket()
+{
+	SetOwner(nullptr);
+	SetInstigator(nullptr);
+	FDetachmentTransformRules TransformRules(EDetachmentRule::KeepWorld, true);
+	ItemMesh->DetachFromComponent(TransformRules);
 }
 
 FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes, TArray<AActor*> ActorsToIgnore, FHitResult LineOfSightResult)

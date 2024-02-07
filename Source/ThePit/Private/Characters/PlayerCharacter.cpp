@@ -67,7 +67,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	// Weapon Aim
 	CalculateSpreadMultiplier();
-	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon->GetCurrentAmmoCount() <= 0 && ActiveWeapon->GetReserveAmmoCount() > 0) ReloadWeapon();
+	if (PlayerCombatState != EPlayerCombatState::EPCS_SwitchingWeapons && ActiveWeapon && ActiveWeapon->GetCurrentAmmoCount() <= 0 && ActiveWeapon->GetReserveAmmoCount() > 0) ReloadWeapon();
 	AimZ = GetCameraRotation().Z;
 
 	// ADS/Stance Toggle Interp
@@ -135,8 +135,6 @@ void APlayerCharacter::BeginPlay()
 
 	TargetCameraPosition = CameraBoom->SocketOffset.Z;
 	TargetCameraZoom = CameraBoom->TargetArmLength;
-
-	EquipWeapon();
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -347,26 +345,26 @@ void APlayerCharacter::CalculateSpreadMultiplier()
 	UpdateWeaponHUD();
 }
 
-void APlayerCharacter::EquipWeapon()
+void APlayerCharacter::EquipWeapon(AWeapon* Weapon)
 {
-	// TEMP: Equip Weapons
-	if (UWorld* World = GetWorld())
+	if (ReserveWeapon != nullptr) // 2 weapons
 	{
-		if (Weapon1Class)
+		ActiveWeapon->Drop();
+		ActiveWeapon = nullptr;
+	}
+	else
+	{
+		if (ActiveWeapon != nullptr) // 1 weapon
 		{
-			AWeapon* Weapon1 = World->SpawnActor<AWeapon>(Weapon1Class);
-			Weapon1->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-			ActiveWeapon = Weapon1;
-		}
-
-		if (Weapon2Class)
-		{
-			AWeapon* Weapon2 = World->SpawnActor<AWeapon>(Weapon2Class);
-			Weapon2->Equip(GetMesh(), FName("BackSocket"), this, this);
-			ReserveWeapon = Weapon2;
+			ActiveWeapon->Drop();
+			ReserveWeapon = ActiveWeapon;
+			ActiveWeapon->Equip(FName("BackSocket"));
+			ActiveWeapon = nullptr;
 		}
 	}
-	UpdateWeaponHUD();
+
+	ActiveWeapon = Weapon;
+	Weapon->Equip(FName("RightHandSocket"));
 }
 
 void APlayerCharacter::ReloadWeapon()
@@ -428,8 +426,10 @@ void APlayerCharacter::UpdateWeaponHUD()
 
 void APlayerCharacter::SwitchWeaponSockets()
 {
-	ActiveWeapon->Equip(GetMesh(), FName("BackSocket"), this, this);
-	ReserveWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+	ActiveWeapon->Drop();
+	ReserveWeapon->Drop();
+	ActiveWeapon->Equip(FName("BackSocket"));
+	ReserveWeapon->Equip(FName("RightHandSocket"));
 
 	AWeapon* TempWeapon = ReserveWeapon;
 	ReserveWeapon = ActiveWeapon;
