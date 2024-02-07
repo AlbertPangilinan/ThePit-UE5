@@ -13,6 +13,7 @@
 
 // Components
 class USphereComponent;
+class UBoxComponent;
 
 // Combat
 class AWeapon;
@@ -48,6 +49,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* InteractRadius;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBoxComponent* LineOfSightBounds;
 
 
 private:	

@@ -5,6 +5,7 @@
 
 // Components
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 // Player Character
 #include "Characters/PlayerCharacter.h"
@@ -26,8 +27,20 @@ AAmmoBox::AAmmoBox()
 
 	// Interact Radius Setup
 	InteractRadius = CreateDefaultSubobject<USphereComponent>(TEXT("InteractRadius"));
+	InteractRadius->SetSphereRadius(72.f);
+	InteractRadius->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
+	InteractRadius->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	InteractRadius->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	InteractRadius->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	InteractRadius->SetupAttachment(GetRootComponent());
 
+	// Line of Sight Bounds Setup
+	LineOfSightBounds = CreateDefaultSubobject<UBoxComponent>(TEXT("LineOfSightBounds"));
+	LineOfSightBounds->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	LineOfSightBounds->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	LineOfSightBounds->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	LineOfSightBounds->SetupAttachment(GetRootComponent());
 }
 
 void AAmmoBox::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

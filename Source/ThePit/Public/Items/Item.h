@@ -11,8 +11,11 @@
 #include "Item.generated.h"
 
 
+// Components
 class USphereComponent;
 class UBoxComponent;
+
+// Player Character
 class APlayerCharacter;
 
 
