@@ -19,8 +19,9 @@ AItem::AItem()
 
 	// Mesh Setup
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
+	ItemMesh->SetSimulatePhysics(true);
 	ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	SetRootComponent(ItemMesh);
 
 	// Interact Radius Setup

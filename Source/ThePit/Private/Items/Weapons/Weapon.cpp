@@ -98,13 +98,15 @@ void AWeapon::BeginPlay()
 
 void AWeapon::EnableCollision()
 {
-	ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	ItemMesh->SetSimulatePhysics(true);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	InteractRadius->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AWeapon::DisableCollision()
 {
+	ItemMesh->SetSimulatePhysics(false);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	InteractRadius->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	LineOfSightBounds->SetCollisionEnabled(ECollisionEnabled::NoCollision);
