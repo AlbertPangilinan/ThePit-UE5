@@ -29,6 +29,7 @@ public:
 	// Functions
 	// Equip
 	void Equip(FName Socket);
+	void Unequip();
 	void Drop();
 	//void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 

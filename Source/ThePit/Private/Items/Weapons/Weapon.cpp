@@ -47,10 +47,16 @@ void AWeapon::Equip(FName Socket)
 	DisableCollision();
 }
 
-void AWeapon::Drop()
+void AWeapon::Unequip()
 {
 	DetachFromSocket();
 	EnableCollision();
+}
+
+void AWeapon::Drop()
+{
+	Unequip();
+	ItemMesh->AddImpulse(GetActorUpVector() * 1000.f);
 }
 
 void AWeapon::Fire()

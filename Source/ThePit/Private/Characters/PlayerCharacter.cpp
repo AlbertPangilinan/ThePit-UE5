@@ -350,14 +350,14 @@ void APlayerCharacter::EquipWeapon(AWeapon* Weapon)
 {
 	if (ReserveWeapon != nullptr) // 2 weapons
 	{
-		ActiveWeapon->Drop();
+		ActiveWeapon->Unequip();
 		ActiveWeapon = nullptr;
 	}
 	else
 	{
 		if (ActiveWeapon != nullptr) // 1 weapon
 		{
-			ActiveWeapon->Drop();
+			ActiveWeapon->Unequip();
 			ReserveWeapon = ActiveWeapon;
 			ActiveWeapon->Equip(FName("BackSocket"));
 			ActiveWeapon = nullptr;
@@ -443,8 +443,8 @@ void APlayerCharacter::UpdateWeaponHUD()
 
 void APlayerCharacter::SwitchWeaponSockets()
 {
-	ActiveWeapon->Drop();
-	ReserveWeapon->Drop();
+	ActiveWeapon->Unequip();
+	ReserveWeapon->Unequip();
 	ActiveWeapon->Equip(FName("BackSocket"));
 	ReserveWeapon->Equip(FName("RightHandSocket"));
 
