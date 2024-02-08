@@ -33,11 +33,15 @@ public:
 	// Functions
 	// Crosshair
 	void SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon);
+	void ClearCrosshairSpread();
 
 	// Weapon
 	void SetCurrentAmmoCount(AWeapon* CurrentWeapon);
+	void ClearCurrentAmmoCount();
 	void SetWeaponName(AWeapon* CurrentWeapon);
+	void ClearWeaponName();
 	void SetFireMode(AWeapon* CurrentWeapon);
+	void ClearFireMode();
 
 	// Interact
 	void SetInteractAction(IInteractInterface* InteractableActor);

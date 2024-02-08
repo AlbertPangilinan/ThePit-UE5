@@ -422,10 +422,20 @@ void APlayerCharacter::UpdateWeaponHUD()
 		{
 			if (UPlayerOverlay* PlayerOverlay = PlayerHUD->GetPlayerOverlay())
 			{
-				PlayerOverlay->SetCrosshairSpread(SpreadMultiplier, ActiveWeapon);
-				PlayerOverlay->SetCurrentAmmoCount(ActiveWeapon);
-				PlayerOverlay->SetWeaponName(ActiveWeapon);
-				PlayerOverlay->SetFireMode(ActiveWeapon);
+				if (ActiveWeapon && SpreadMultiplier)
+				{
+					PlayerOverlay->SetCrosshairSpread(SpreadMultiplier, ActiveWeapon);
+					PlayerOverlay->SetCurrentAmmoCount(ActiveWeapon);
+					PlayerOverlay->SetWeaponName(ActiveWeapon);
+					PlayerOverlay->SetFireMode(ActiveWeapon);
+				}
+				else
+				{
+					PlayerOverlay->ClearCrosshairSpread();
+					PlayerOverlay->ClearCurrentAmmoCount();
+					PlayerOverlay->ClearWeaponName();
+					PlayerOverlay->ClearFireMode();
+				}
 			}
 		}
 	}
