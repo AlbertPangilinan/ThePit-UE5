@@ -32,7 +32,7 @@ class THEPIT_API UPlayerOverlay : public UUserWidget
 public:
 	// Functions
 	// Crosshair
-	void SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon);
+	void SetCrosshairSpread(AWeapon* CurrentWeapon, float SpreadMultiplier);
 	void ClearCrosshairSpread();
 
 	// Weapon

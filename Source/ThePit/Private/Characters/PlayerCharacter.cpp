@@ -424,7 +424,7 @@ void APlayerCharacter::UpdateWeaponHUD()
 			{
 				if (ActiveWeapon && SpreadMultiplier)
 				{
-					PlayerOverlay->SetCrosshairSpread(SpreadMultiplier, ActiveWeapon);
+					PlayerOverlay->SetCrosshairSpread(ActiveWeapon, SpreadMultiplier);
 					PlayerOverlay->SetCurrentAmmoCount(ActiveWeapon);
 					PlayerOverlay->SetWeaponName(ActiveWeapon);
 					PlayerOverlay->SetFireMode(ActiveWeapon);

@@ -15,7 +15,7 @@
 #include "Interfaces/InteractInterface.h"
 
 
-void UPlayerOverlay::SetCrosshairSpread(float SpreadMultiplier, AWeapon* CurrentWeapon)
+void UPlayerOverlay::SetCrosshairSpread(AWeapon* CurrentWeapon, float SpreadMultiplier)
 {
 	float CrosshairSpread = CurrentWeapon->GetSpread() * SpreadMultiplier * CrosshairOffset;
 
