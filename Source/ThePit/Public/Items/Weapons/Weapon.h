@@ -79,6 +79,9 @@ private:
 	float RateOfFire = 600.f; // RPM
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	EWeaponClass WeaponClass = EWeaponClass::EWC_Rifle;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	EWeaponFireMode FireMode = EWeaponFireMode::EWFM_FullAuto;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
