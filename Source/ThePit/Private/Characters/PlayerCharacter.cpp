@@ -99,6 +99,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &APlayerCharacter::SwitchWeapon);
 		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::ReloadWeapon);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+		EnhancedInputComponent->BindAction(DropAction, ETriggerEvent::Started, this, &APlayerCharacter::Drop);
 	}
 }
 
@@ -323,6 +324,22 @@ void APlayerCharacter::Interact()
 	{
 		IInteractInterface* InteractableActor = Cast<IInteractInterface>(LineOfSightActor);
 		InteractableActor->Interact();
+	}
+}
+
+void APlayerCharacter::Drop()
+{
+	if (ActiveWeapon == nullptr) return;
+
+	ActiveWeapon->Drop();
+	ActiveWeapon = nullptr;
+
+	if (ReserveWeapon != nullptr)
+	{
+		ReserveWeapon->Unequip();
+		ActiveWeapon = ReserveWeapon;
+		ReserveWeapon->Equip(FName("RightHandSocket"));
+		ReserveWeapon = nullptr;
 	}
 }
 

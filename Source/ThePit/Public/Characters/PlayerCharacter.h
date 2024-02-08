@@ -69,6 +69,7 @@ protected:
 	void StartAttackTimer();
 	void ClearAttackTimer();
 	void Interact();
+	void Drop();
 
 	// Animation
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
@@ -124,6 +125,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* InteractAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* DropAction;
 
 	// Player State
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

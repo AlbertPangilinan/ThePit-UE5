@@ -55,8 +55,12 @@ void AWeapon::Unequip()
 
 void AWeapon::Drop()
 {
+	AActor* WeaponOwner = GetOwner();
+	FVector OwnerForwardVector = WeaponOwner->GetActorForwardVector();
+	FVector OwnerUpVector = WeaponOwner->GetActorUpVector();
+
 	Unequip();
-	ItemMesh->AddImpulse(GetActorUpVector() * 1000.f);
+	ItemMesh->AddImpulse((OwnerForwardVector + OwnerUpVector) * 1000.f);
 }
 
 void AWeapon::Fire()
