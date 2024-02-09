@@ -145,7 +145,7 @@ FHitResult AWeapon::HitscanLineTrace(APlayerCharacter* PlayerCharacter, TArray<T
 	FVector HitscanStart = HitscanOrigin->GetComponentLocation();
 	FVector HitscanEnd = CalculateTrajectory(PlayerCharacter, LineOfSightResult.ImpactPoint - HitscanStart);
 
-	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitscanResult, true, FColor::Red);
+	UKismetSystemLibrary::LineTraceSingleForObjects(this, HitscanStart, HitscanEnd, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::None, HitscanResult, true, FColor::Red);
 
 	return HitscanResult;
 }
