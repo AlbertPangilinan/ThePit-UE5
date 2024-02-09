@@ -173,7 +173,7 @@ void AWeapon::KnockOverTarget(FHitResult HitscanResult)
 	}
 	else
 	{
-		DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1000.f);
+		//DrawDebugSphere(GetWorld(), HitscanResult.ImpactPoint, 3.f, 12, FColor::Green, false, 1000.f);
 	}
 }
 
